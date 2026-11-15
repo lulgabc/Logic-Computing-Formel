@@ -35,7 +35,8 @@ theorem eval_imp (v : String → Bool) (p q : Formula) :
     eval v (.imp p q) = (Bool.not (eval v p) || eval v q) := rfl
 
 theorem eval_not (v : String → Bool) (p : Formula) :
-    eval v (.not p) = Bool.not (eval v p) := rfl
+    eval v (.not p) = Bool.not (eval v p) := by
+  simp [Formula.not, eval]
 
 -- A tiny sanity check: P → P is true under every assignment.
 example (v : String → Bool) : eval v (.imp (.atom "P") (.atom "P")) = true := by

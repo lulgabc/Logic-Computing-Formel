@@ -41,9 +41,9 @@
 (reset)
 
 ; ------------------------------------------------------------
-; 4. Arrays (QF_AX): store then select
+; 4. Arrays (QF_AUFLIA): store then select
 ; ------------------------------------------------------------
-(set-logic QF_AX)
+(set-logic QF_AUFLIA)
 (declare-const a (Array Int Int))
 (declare-const i Int)
 (declare-const j Int)
