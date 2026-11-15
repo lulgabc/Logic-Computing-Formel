@@ -4,7 +4,8 @@
 
 > 目录名 `Logic-Computing-Formel` 中的 **Formel** 取自德语“形式 / 公式”，对应站点的“形式化”主题。
 
-**Live site（部署后）:** https://lulgabc.github.io/Logic-Computing-Formel/
+**Live site:** https://lulgabc.github.io/Logic-Computing-Formel/  
+**Repo:** https://github.com/lulgabc/Logic-Computing-Formel
 
 ## 里面有什么
 
