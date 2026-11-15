@@ -1,0 +1,428 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import { topics, getAdjacentTopics } from "../../data/topics";
+import { url } from "../../lib/url";
+import type { Topic } from "../../data/types";
+
+export function getStaticPaths() {
+  return topics.map((topic) => ({
+    params: { slug: topic.slug },
+    props: { topic },
+  }));
+}
+
+interface Props {
+  topic: Topic;
+}
+
+const { topic } = Astro.props;
+const { previous, next } = getAdjacentTopics(topic.slug);
+const openTools = topic.tools.filter((tool) => tool.kind !== "commercial");
+const commercialTools = topic.tools.filter((tool) => tool.kind === "commercial");
+const sections = [
+  ["intro", "介绍"],
+  ["path", "路径"],
+  ["courses", "课程"],
+  ["books", "书单"],
+  ["latest", "前沿"],
+  ["tools", "工具"],
+  ["labs", "实践"],
+  ["checkpoints", "自检"],
+] as const;
+---
+
+<BaseLayout title={topic.title} description={`${topic.title}（${topic.en}）：${topic.tagline} 包含介绍、学习路径、课程、参考书、2025–2026 前沿、开源与商业工具、实践 Lab 与自检清单。`}>
+  <div style={`--topic: ${topic.accent}`}>
+    <header class="topic-hero">
+      <div class="wrap">
+        <div class="breadcrumb">
+          <a href={url("/")}>首页</a><span>/</span>
+          <a href={url("/#topics")}>主题</a><span>/</span>
+          <span>{topic.title}</span>
+        </div>
+        <div class="topic-hero-grid">
+          <div>
+            <div class="topic-kicker">
+              <span class="num">{topic.index}</span>
+              <span>TOPIC {topic.index} / 07</span>
+            </div>
+            <h1 class="topic-title">{topic.title}</h1>
+            <div class="topic-en">{topic.en}</div>
+            <p class="topic-tagline">{topic.tagline}</p>
+            <div class="topic-meta">
+              <span class="chip"><b>难度</b> {topic.difficulty}</span>
+              <span class="chip"><b>投入</b> {topic.hours}</span>
+              <span class="chip"><b>课程</b> {topic.courses.length}</span>
+              <span class="chip"><b>工具</b> {topic.tools.length}</span>
+              <span class="chip"><b>Labs</b> {topic.labs.length}</span>
+            </div>
+            <div class="topic-question">
+              <span>Guiding question</span>
+              {topic.question}
+            </div>
+          </div>
+
+          <aside class="topic-glyph-panel" aria-label="主题概览">
+            <div class="glyph-big" aria-hidden="true">{topic.glyph}</div>
+            <div class="glyph-meta">
+              <div><span>Prerequisites</span><b>{topic.prerequisites.length} 项</b></div>
+              <div><span>Core concepts</span><b>{topic.intro.concepts.length}</b></div>
+              <div><span>Latest entries</span><b>{topic.latest.length}</b></div>
+              <div><span>Checkpoints</span><b>{topic.checkpoints.length}</b></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </header>
+
+    <nav class="topic-nav" aria-label="主题内导航">
+      <div class="wrap topic-nav-inner">
+        {sections.map(([id, label]) => (
+          <a href={`#${id}`}>{label}</a>
+        ))}
+        <div class="topic-progress">
+          <span>掌握</span>
+          <span data-progress-text>0 / {topic.checkpoints.length}</span>
+          <div class="progress-track"><div class="progress-fill" data-progress-fill></div></div>
+        </div>
+      </div>
+    </nav>
+
+    <article>
+      <section class="topic-section" id="intro">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">01</span>
+            <h2>介绍</h2>
+            <span class="aside">What is this field?</span>
+          </div>
+
+          <p class="topic-lead">{topic.intro.lead}</p>
+
+          <div class="topic-cols">
+            <div class="prose">
+              {topic.intro.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+            <div>
+              <h4 class="mono" style="font-size:0.68rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;">先修 / Prerequisites</h4>
+              <div class="row mt-1">
+                {topic.prerequisites.map((item) => <span class="badge">{item}</span>)}
+              </div>
+              <h4 class="mono mt-3" style="font-size:0.68rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;">子领域 / Subfields</h4>
+              <ul class="subfield-list mt-1">
+                {topic.intro.subfields.map((field) => (
+                  <li>
+                    <b>{field.name}</b>
+                    <span>{field.desc}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <h4 class="mono mt-4" style="font-size:0.68rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;">核心概念 / Core concepts</h4>
+          <div class="concept-grid cols-4">
+            {topic.intro.concepts.map((concept) => (
+              <div class="concept">
+                <b>{concept.term}</b>
+                <span>{concept.def}</span>
+              </div>
+            ))}
+          </div>
+
+          <h4 class="mono mt-4" style="font-size:0.68rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;">为什么值得学 / Why it matters</h4>
+          <div class="why-grid">
+            {topic.intro.why.map((reason, i) => (
+              <div class="why-card">
+                <span class="n">REASON 0{i + 1}</span>
+                <p>{reason}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="topic-section" id="path">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">02</span>
+            <h2>学习路径</h2>
+            <span class="aside">A 12-week ladder</span>
+          </div>
+          <ol class="stage-list">
+            {topic.stages.map((stage, i) => (
+              <li class="stage">
+                <span class="stage-num">{String(i + 1).padStart(2, "0")}</span>
+                <div class="stage-body">
+                  <div class="stage-head">
+                    <h3>{stage.title}</h3>
+                    <span class="stage-weeks">{stage.weeks}</span>
+                  </div>
+                  <div class="stage-items">
+                    {stage.items.map((item) => <span>{item}</span>)}
+                  </div>
+                  <div class="stage-output">
+                    <b>Output</b> · {stage.output}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="topic-section" id="courses">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">03</span>
+            <h2>课程</h2>
+            <span class="aside">{topic.courses.length} 门 · 按难度排序</span>
+          </div>
+          <div class="course-list">
+            {topic.courses.map((course) => (
+              <div class="course">
+                <div class="course-main">
+                  <h3><a href={course.url} rel="noopener">{course.name} <span aria-hidden="true">↗</span></a></h3>
+                  <div class="course-org">{course.org}</div>
+                  <p class="course-note">{course.note}</p>
+                </div>
+                <div class="course-side">
+                  <span class="badge">{course.level}</span>
+                  <span class="course-format">{course.format}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="topic-section" id="books">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">04</span>
+            <h2>参考书</h2>
+            <span class="aside">{topic.books.length} 本 · 先读 / 主教材 / 进阶 / 工具书</span>
+          </div>
+          <div class="book-list">
+            {topic.books.map((book) => (
+              <div class="book">
+                <div class="book-spine"></div>
+                <div>
+                  <div class="book-head">
+                    <span class="book-title">
+                      {book.url ? <a href={book.url} rel="noopener">{book.title} <span aria-hidden="true">↗</span></a> : book.title}
+                    </span>
+                    <span class="book-authors">{book.authors} · {book.year}</span>
+                  </div>
+                  <p class="book-note">{book.note}</p>
+                  <div class="book-badges">
+                    <span class="badge badge-solid">{book.use}</span>
+                    <span class="badge">{book.level}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="topic-section" id="latest">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">05</span>
+            <h2>最新发展</h2>
+            <span class="aside">2025–2026 · 状态标记</span>
+          </div>
+          <ol class="latest-list">
+            {topic.latest.map((item) => (
+              <li class="latest-item">
+                <span class="latest-date">{item.date}</span>
+                <div class="latest-body">
+                  <div class="latest-head">
+                    <h3>{item.title}</h3>
+                    <StatusBadge status={item.status} />
+                  </div>
+                  <p class="latest-text">{item.body}</p>
+                  {item.source && (
+                    <a class="latest-source" href={item.source.url} rel="noopener">
+                      <span>↗</span> {item.source.label}
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p class="mt-2 muted" style="font-size:0.72rem;">
+            状态定义：<a href={url("/about/#status")}>已核实 / 报道 / 待复核</a>。引用前沿声明时，请同时引用原始来源与验证状态。
+          </p>
+        </div>
+      </section>
+
+      <section class="topic-section" id="tools">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">06</span>
+            <h2>工具</h2>
+            <span class="aside">{topic.tools.length} 个 · 开源 / 商业 / 研究</span>
+          </div>
+
+          <div class="tool-group">
+            <div class="tool-group-head">
+              <h3>开源 / 学术</h3>
+              <span>{openTools.length} 个</span>
+            </div>
+            <div class="tool-grid">
+              {openTools.map((tool) => (
+                <div class="tool-card">
+                  <div class="tool-head">
+                    <div>
+                      <div class="tool-name"><a href={tool.url} rel="noopener">{tool.name} <span aria-hidden="true">↗</span></a></div>
+                      <div class="tool-tags">
+                        <span class:list={["badge", tool.kind === "research" ? "badge-research" : "badge-open"]}>
+                          {tool.kind === "research" ? "研究" : "开源"}
+                        </span>
+                        {tool.tags.map((tag) => <span class="badge">{tag}</span>)}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tool-meta">{tool.lang} · {tool.license}</div>
+                  <p class="tool-note">{tool.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {commercialTools.length > 0 && (
+            <div class="tool-group">
+              <div class="tool-group-head">
+                <h3>商业 / 厂商</h3>
+                <span>{commercialTools.length} 个</span>
+              </div>
+              <div class="tool-grid">
+                {commercialTools.map((tool) => (
+                  <div class="tool-card">
+                    <div class="tool-head">
+                      <div>
+                        <div class="tool-name"><a href={tool.url} rel="noopener">{tool.name} <span aria-hidden="true">↗</span></a></div>
+                        <div class="tool-tags">
+                          <span class="badge badge-commercial">商业</span>
+                          {tool.tags.map((tag) => <span class="badge">{tag}</span>)}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tool-meta">{tool.lang} · {tool.license}</div>
+                    <p class="tool-note">{tool.note}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <p class="mt-3 muted" style="font-size:0.72rem;">
+            许可与版本会变化；商用前请以官方页面为准。工具页可按领域、类型筛选：<a href={url("/tools/")}>工具全景 →</a>
+          </p>
+        </div>
+      </section>
+
+      <section class="topic-section" id="labs">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">07</span>
+            <h2>实践 Lab</h2>
+            <span class="aside">{topic.labs.length} 个 · 每个都要有产物</span>
+          </div>
+          <div class="lab-grid">
+            {topic.labs.map((lab) => (
+              <div class="lab-card">
+                <h3>{lab.title}</h3>
+                <p class="lab-goal">{lab.goal}</p>
+                <ol>
+                  {lab.steps.map((step) => <li>{step}</li>)}
+                </ol>
+                <div class="lab-foot">
+                  <div class="lab-deliverable"><b>Deliverable</b> · {lab.deliverable}</div>
+                  {lab.stretch && <p class="lab-stretch">延伸：{lab.stretch}</p>}
+                  {lab.code && <a class="lab-code" href={url(lab.code)}>下载起步代码 ↗</a>}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p class="mt-3"><a class="mono" href={url("/labs/")} style="font-size:0.72rem;">打开交互实验室：真值表 / DPLL / 二维 LP →</a></p>
+        </div>
+      </section>
+
+      <section class="topic-section" id="checkpoints">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">08</span>
+            <h2>自检清单</h2>
+            <span class="aside">勾选会保存在本地浏览器</span>
+          </div>
+          <p class="prose" style="font-size:0.86rem;color:var(--muted);">
+            能“解释”、能“证明”、能“实现”是三件不同的事。只有当你能在不看笔记的情况下完成，才算真正掌握。
+          </p>
+          <div class="checkpoints">
+            {topic.checkpoints.map((checkpoint, i) => (
+              <label class="checkpoint">
+                <input type="checkbox" data-topic={topic.slug} data-checkpoint={i} />
+                <span>{checkpoint}</span>
+              </label>
+            ))}
+          </div>
+          <div class="progress-line">
+            <span>完成度</span>
+            <span data-progress-text>0 / {topic.checkpoints.length}</span>
+            <div class="progress-track"><div class="progress-fill" data-progress-fill></div></div>
+            <button class="btn btn-ghost btn-small" type="button" data-reset-progress>重置</button>
+          </div>
+
+          <h3 class="mt-4">与其他主题的连接</h3>
+          <div class="connection-grid mt-2">
+            {topic.connections.map((connection) => {
+              const related = topics.find((item) => item.slug === connection.slug);
+              return related ? (
+                <a class="connection" href={url(`/topics/${related.slug}/`)}>
+                  <span class="g" aria-hidden="true">{related.glyph}</span>
+                  <span>
+                    <b>{related.title}</b>
+                    <span>{connection.note}</span>
+                  </span>
+                </a>
+              ) : null;
+            })}
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <nav class="wrap topic-pager" aria-label="主题翻页">
+      {previous ? (
+        <a class="pager-link" href={url(`/topics/${previous.slug}/`)}>
+          <span class="k">← 上一个主题 / {previous.index}</span>
+          <b>{previous.title}</b>
+        </a>
+      ) : (
+        <a class="pager-link" href={url("/roadmap/")}>
+          <span class="k">← 回到</span>
+          <b>三条学习路线</b>
+        </a>
+      )}
+      {next ? (
+        <a class="pager-link next" href={url(`/topics/${next.slug}/`)}>
+          <span class="k">下一个主题 / {next.index} →</span>
+          <b>{next.title}</b>
+        </a>
+      ) : (
+        <a class="pager-link next" href={url("/tools/")}>
+          <span class="k">继续 →</span>
+          <b>工具全景</b>
+        </a>
+      )}
+    </nav>
+  </div>
+
+  <script>
+    import "../../scripts/progress";
+  </script>
+</BaseLayout>

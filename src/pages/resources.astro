@@ -1,0 +1,110 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { topics } from "../data/topics";
+import type { Book, Course, Topic } from "../data/types";
+
+interface CourseEntry { course: Course; topic: Topic; }
+interface BookEntry { book: Book; topic: Topic; }
+
+const courses: CourseEntry[] = topics.flatMap((topic) => topic.courses.map((course) => ({ course, topic })));
+const books: BookEntry[] = topics.flatMap((topic) => topic.books.map((book) => ({ book, topic })));
+const levels = ["入门", "进阶", "研究"];
+---
+
+<BaseLayout title="课程与书单" description="七个主题的精选课程与参考书：数学逻辑、类型论、范畴论、计算与复杂度、形式化验证、优化、SAT/SMT/Proof Assistant。可按主题与难度筛选。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Resources / {courses.length + books.length} entries</span>
+      <h1>课程与书单</h1>
+      <p class="lead">
+        不是“越多越好”。每个主题只保留少量入口：一门主课、一本主教材，其余作为进阶与工具书。
+        标注难度与用途，方便你决定“现在读”还是“以后查”。
+      </p>
+      <div class="row mt-2">
+        <span class="badge">{courses.length} 门课程</span>
+        <span class="badge">{books.length} 本书</span>
+        <span class="badge">7 个主题</span>
+        <span class="badge">中文站点 · 英文资源</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="wrap">
+      <div class="tabs" role="tablist" aria-label="资源类型">
+        <button class="tab is-active" id="tab-courses" role="tab" aria-selected="true" aria-controls="panel-courses" data-tab="course">课程 · {courses.length}</button>
+        <button class="tab" id="tab-books" role="tab" aria-selected="false" aria-controls="panel-books" data-tab="book">书单 · {books.length}</button>
+      </div>
+
+      <div class="filter-bar" role="search">
+        <input class="search-input" id="resource-search" type="search" placeholder="搜索课程、书名、作者、主题…" aria-label="搜索资源" />
+        <select class="select-input" id="resource-domain" aria-label="按主题筛选">
+          <option value="">全部主题</option>
+          {topics.map((topic) => <option value={topic.slug}>{topic.index} · {topic.title}</option>)}
+        </select>
+        <select class="select-input" id="resource-level" aria-label="按难度筛选">
+          <option value="">全部难度</option>
+          {levels.map((level) => <option value={level}>{level}</option>)}
+        </select>
+        <span class="filter-count" id="resource-count">{courses.length} 条资源</span>
+      </div>
+
+      <div class="tab-panel" id="panel-courses" role="tabpanel" aria-labelledby="tab-courses">
+        <div class="browse-grid" id="course-grid">
+          {courses.map(({ course, topic }) => {
+            const haystack = [course.name, course.org, course.note, course.format, topic.title, topic.en].join(" ").toLowerCase();
+            return (
+              <a class="browse-card" href={course.url} rel="noopener" data-type="course" data-domain={topic.slug} data-level={course.level} data-search={haystack}>
+                <span class="domain">{topic.index} · {topic.title}</span>
+                <h3>{course.name}</h3>
+                <div class="meta">{course.org} · {course.format}</div>
+                <p>{course.note}</p>
+                <div class="tags">
+                  <span class="badge">{course.level}</span>
+                  <span class="badge">{course.format}</span>
+                </div>
+                <span class="link">打开课程 ↗</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panel-books" role="tabpanel" aria-labelledby="tab-books" hidden>
+        <div class="browse-grid" id="book-grid">
+          {books.map(({ book, topic }) => {
+            const haystack = [book.title, book.authors, book.note, book.use, topic.title, topic.en].join(" ").toLowerCase();
+            return (
+              <a class="browse-card" href={book.url ?? "#"} rel="noopener" data-type="book" data-domain={topic.slug} data-level={book.level} data-search={haystack}>
+                <span class="domain">{topic.index} · {topic.title}</span>
+                <h3>{book.title}</h3>
+                <div class="meta">{book.authors} · {book.year}</div>
+                <p>{book.note}</p>
+                <div class="tags">
+                  <span class="badge badge-solid">{book.use}</span>
+                  <span class="badge">{book.level}</span>
+                </div>
+                <span class="link">查看书目 ↗</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      <p class="filter-empty" id="resource-empty">没有匹配的资源。试试清空筛选，或换一个关键词。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="callout">
+        <b>阅读建议：</b>主教材读两遍比四本书各读一遍更有效。第一遍只抓定义与定理陈述，
+        第二遍做习题并写一页“这章到底在解决什么问题”。课程视频可以加速看，但证明必须自己写。
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/resources-filter";
+  </script>
+</BaseLayout>

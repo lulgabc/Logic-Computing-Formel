@@ -1,0 +1,28 @@
+---
+import type { Topic } from "../data/types";
+import { url } from "../lib/url";
+
+interface Props {
+  topic: Topic;
+}
+
+const { topic } = Astro.props;
+---
+
+<a
+  class="topic-card"
+  href={url(`/topics/${topic.slug}/`)}
+  style={`--topic: ${topic.accent}`}
+>
+  <div class="topic-card-top">
+    <span class="topic-index">TOPIC / {topic.index}</span>
+    <span class="topic-glyph" aria-hidden="true">{topic.glyph}</span>
+  </div>
+  <h3>{topic.title}</h3>
+  <div class="en">{topic.en}</div>
+  <p>{topic.tagline}</p>
+  <div class="topic-card-foot">
+    <span>{topic.courses.length} 课程 · {topic.tools.length} 工具 · {topic.labs.length} Labs</span>
+    <span class="arrow" aria-hidden="true">→</span>
+  </div>
+</a>

@@ -1,0 +1,64 @@
+---
+import { site } from "../lib/site";
+import { url } from "../lib/url";
+import { topics } from "../data/topics";
+import { statusMeta } from "../data/site";
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-wordmark">计算，逻辑<span>与</span>形式化</div>
+        <p class="footer-desc">
+          一份中文学习与实践地图：从证明、类型与范畴，到复杂度、验证、优化与自动推理。
+          每个主题都包含介绍、课程、书单、2025–2026 动态，以及开源/商业工具。
+        </p>
+        <p class="footer-desc mono" style="margin-top:0.6rem;font-size:0.64rem;">
+          Logic, Computing &amp; Formalization · {site.year}
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>七个主题</h4>
+        <ul>
+          {topics.map((topic) => (
+            <li><a href={url(`/topics/${topic.slug}/`)}>{topic.title}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>学习</h4>
+        <ul>
+          <li><a href={url("/roadmap/")}>三条路线图</a></li>
+          <li><a href={url("/labs/")}>交互实验室</a></li>
+          <li><a href={url("/tools/")}>工具全景</a></li>
+          <li><a href={url("/resources/")}>课程与书单</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>关于</h4>
+        <ul>
+          <li><a href={url("/about/")}>方法与内容原则</a></li>
+          <li><a href={url("/about/#status")}>状态标记说明</a></li>
+          <li><a href={site.repo} rel="noopener">GitHub 仓库</a></li>
+          <li><a href={url("/about/#license")}>许可</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        © {site.year} {site.author} · 文字与代码以 MIT 许可开源<br />
+        第三方书籍、论文、商标与链接资源版权归各自权利人所有。
+      </div>
+      <div class="footer-status" aria-label="内容状态图例">
+        {(Object.entries(statusMeta) as [keyof typeof statusMeta, (typeof statusMeta)[keyof typeof statusMeta]][]).map(([key, meta]) => (
+          <span><span class:list={["status", `status-${key}`]}>{meta.label}</span> {meta.short}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>

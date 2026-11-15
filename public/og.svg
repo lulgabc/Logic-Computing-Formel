@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#d8d0bf" stroke-width="1" opacity="0.55"/>
+    </pattern>
+    <radialGradient id="glow" cx="82%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#b4430f" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#b4430f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f6f2e9"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <text x="80" y="96" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" letter-spacing="3" fill="#746d60">A LEARNING MAP / 2026</text>
+  <rect x="80" y="120" width="76" height="6" fill="#b4430f"/>
+
+  <text x="78" y="240" font-family="Songti SC, Noto Serif CJK SC, STSong, serif" font-size="82" font-weight="700" fill="#171512">计算，逻辑</text>
+  <text x="78" y="338" font-family="Songti SC, Noto Serif CJK SC, STSong, serif" font-size="82" font-weight="700" fill="#171512">与<tspan fill="#b4430f">形式化</tspan></text>
+
+  <text x="82" y="404" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" letter-spacing="1.5" fill="#3d3830">LOGIC · COMPUTING · FORMALIZATION</text>
+  <text x="82" y="448" font-family="PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" fill="#746d60">七个主题 · 三条路线 · 可运行的实验室</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#746d60">
+    <text x="82" y="526">01 数学逻辑</text>
+    <text x="278" y="526">02 类型论</text>
+    <text x="438" y="526">03 范畴论</text>
+    <text x="598" y="526">04 复杂度</text>
+    <text x="748" y="526">05 形式化</text>
+    <text x="898" y="526">06 优化</text>
+    <text x="1028" y="526">07 SAT/SMT</text>
+  </g>
+  <line x1="82" y1="556" x2="1118" y2="556" stroke="#b9ae99" stroke-width="1"/>
+  <text x="82" y="594" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#746d60">lulgabc.github.io / Logic-Computing-Formel</text>
+
+  <text x="1110" y="300" text-anchor="end" font-family="Songti SC, Noto Serif CJK SC, STSong, serif" font-size="300" fill="#b4430f" opacity="0.13">⊢</text>
+</svg>

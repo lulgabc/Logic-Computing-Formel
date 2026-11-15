@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lulgabc.github.io/Logic-Computing-Formel/sitemap-index.xml

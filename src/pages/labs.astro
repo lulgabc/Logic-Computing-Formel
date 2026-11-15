@@ -1,0 +1,197 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { topics } from "../data/topics";
+import { url } from "../lib/url";
+
+const selectedLabs = topics.flatMap((topic) =>
+  topic.labs.slice(0, 1).map((lab) => ({ topic, lab })),
+);
+---
+
+<BaseLayout title="实验室" description="三个可在浏览器中运行的交互实验：命题逻辑真值表、DPLL SAT 求解器、二维线性规划几何。附七个主题的 Lab 阶梯与起步代码。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Lab / interactive</span>
+      <h1>实验室：把定义跑起来</h1>
+      <p class="lead">
+        三个最小实验：真值表让你看到“语义”，DPLL 让你看到“搜索”，二维 LP 让你看到“可行域与最优性”。
+        它们都不依赖后端，直接在浏览器里运行；源码在仓库的 <code>src/scripts/labs/</code>。
+      </p>
+      <div class="row mt-2">
+        <a class="btn btn-ghost btn-small" href="#truth-table">真值表</a>
+        <a class="btn btn-ghost btn-small" href="#dpll">DPLL</a>
+        <a class="btn btn-ghost btn-small" href="#lp">二维 LP</a>
+        <a class="btn btn-ghost btn-small" href="#ladder">Lab 阶梯</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="wrap">
+      <div class="lab-tool" id="truth-table">
+        <div class="lab-controls">
+          <span class="eyebrow plain">Lab 01 / Semantics</span>
+          <h3>真值表分类器</h3>
+          <p>
+            输入一个命题公式，枚举所有变量赋值，判断它是重言式、矛盾式还是可满足式。
+            支持 <code>¬ ∧ ∨ → ↔</code> 与 ASCII 别名 <code>~ &amp; | -&gt; &lt;-&gt;</code>。
+          </p>
+          <div class="field">
+            <label for="tt-formula">公式 / Formula</label>
+            <input id="tt-formula" type="text" value="(P → Q) ↔ (¬P ∨ Q)" spellcheck="false" autocomplete="off" />
+          </div>
+          <div class="preset-row" aria-label="示例公式">
+            <button class="preset" type="button" data-tt-preset="(P → Q) ↔ (¬P ∨ Q)">重言式</button>
+            <button class="preset" type="button" data-tt-preset="(P → Q) → (Q → P)">可满足</button>
+            <button class="preset" type="button" data-tt-preset="P ∧ ¬P">矛盾式</button>
+            <button class="preset" type="button" data-tt-preset="(P ∨ Q) ∧ (¬P ∨ R) ∧ (¬Q ∨ ¬R)">3-SAT</button>
+          </div>
+          <button class="btn" id="tt-run" type="button">生成真值表 <span aria-hidden="true">→</span></button>
+          <p class="lab-notes">最多 6 个变量（64 行）。变量名以字母开头，可含数字与下划线。</p>
+        </div>
+        <div class="lab-output">
+          <div class="lab-output-head">
+            <span>TRUTH TABLE</span>
+            <span id="tt-status">等待运行</span>
+          </div>
+          <div id="tt-result"></div>
+        </div>
+      </div>
+
+      <div class="lab-tool" id="dpll">
+        <div class="lab-controls">
+          <span class="eyebrow plain">Lab 02 / Search</span>
+          <h3>DPLL SAT 求解器</h3>
+          <p>
+            每行一个子句，空格分隔文字，<code>-</code> 表示否定。也支持 DIMACS CNF：
+            <code>p cnf 3 2</code> 后跟以 <code>0</code> 结尾的子句。求解器会显示决策、传播与冲突轨迹。
+          </p>
+          <div class="field">
+            <label for="sat-input">CNF / Clauses</label>
+            <textarea id="sat-input" spellcheck="false">(P ∨ Q) ∧ (¬P ∨ Q) ∧ (P ∨ ¬Q)</textarea>
+          </div>
+          <div class="preset-row" aria-label="示例 CNF">
+            <button class="preset" type="button" data-sat-preset="sat">SAT</button>
+            <button class="preset" type="button" data-sat-preset="unsat">UNSAT</button>
+            <button class="preset" type="button" data-sat-preset="pigeon">鸽巢 3→2</button>
+            <button class="preset" type="button" data-sat-preset="color">K4 3-着色</button>
+            <button class="preset" type="button" data-sat-preset="dimacs">DIMACS</button>
+          </div>
+          <div class="row">
+            <button class="btn" id="sat-run" type="button">求解 <span aria-hidden="true">→</span></button>
+            <button class="btn btn-ghost" id="sat-clear" type="button">清空</button>
+          </div>
+          <p class="lab-notes">这是教学版 DPLL（单元传播 + 分支），不是工业级 CDCL；适合观察搜索，不适合大实例。</p>
+        </div>
+        <div class="lab-output">
+          <div class="lab-output-head">
+            <span>DPLL TRACE</span>
+            <span id="sat-status">等待运行</span>
+          </div>
+          <div class="sat-stats" id="sat-stats"></div>
+          <div id="sat-result"></div>
+          <div class="sat-trace" id="sat-trace" style="margin-top:0.6rem;"></div>
+        </div>
+      </div>
+
+      <div class="lab-tool" id="lp">
+        <div class="lab-controls">
+          <span class="eyebrow plain">Lab 03 / Geometry</span>
+          <h3>二维线性规划</h3>
+          <p>
+            改变目标函数与约束，观察可行域、顶点与最优解。支持 <code>≤ ≥ =</code>；
+            无界与不可行会单独标注；视图会根据约束自动缩放。
+          </p>
+          <div class="row" style="gap:0.35rem;">
+            <select class="select-input" id="lp-sense" aria-label="优化方向">
+              <option value="max">max</option>
+              <option value="min">min</option>
+            </select>
+            <input class="select-input" id="lp-c1" type="number" step="0.5" value="3" aria-label="x 系数" style="width:70px;" />
+            <span class="mono">x +</span>
+            <input class="select-input" id="lp-c2" type="number" step="0.5" value="2" aria-label="y 系数" style="width:70px;" />
+            <span class="mono">y</span>
+          </div>
+          <div class="field">
+            <label>约束 / Constraints (a x + b y op c)</label>
+            <div class="lp-constraints" id="lp-constraints"></div>
+          </div>
+          <div class="row">
+            <button class="preset" id="lp-add" type="button">+ 添加约束</button>
+            <button class="btn btn-small" id="lp-run" type="button">求解 <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="preset-row" aria-label="示例 LP">
+            <button class="preset" type="button" data-lp-preset="bounded">有界最优</button>
+            <button class="preset" type="button" data-lp-preset="min">最小化</button>
+            <button class="preset" type="button" data-lp-preset="infeasible">不可行</button>
+            <button class="preset" type="button" data-lp-preset="unbounded">无界</button>
+            <button class="preset" type="button" data-lp-preset="degenerate">无穷多最优</button>
+          </div>
+          <p class="lab-notes">删除约束会立即重算；数值用浮点，教学演示不追求工业级数值稳定性。</p>
+        </div>
+        <div class="lab-output">
+          <div class="lab-output-head">
+            <span>FEASIBLE REGION</span>
+            <span id="lp-status">等待运行</span>
+          </div>
+          <div id="lp-result"></div>
+          <svg id="lp-svg" class="lp-svg" viewBox="0 0 720 520" role="img" aria-label="二维线性规划可行域"></svg>
+          <div class="lp-legend">
+            <span><i class="swatch feasible"></i> 可行域</span>
+            <span><i class="swatch objective"></i> 目标等值线</span>
+            <span><i class="swatch constraint"></i> 约束边界</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ladder">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Lab ladder / 7 × 4</span>
+          <h2>Lab 阶梯：每个主题的第一课</h2>
+        </div>
+        <div class="head-aside">
+          <p>完整 Lab 在每个主题页。这里列出每主题的第一个 lab，作为“今天就能开始”的入口。</p>
+        </div>
+      </div>
+      <div class="lab-grid">
+        {selectedLabs.map(({ topic, lab }) => (
+          <div class="lab-card" style={`--topic:${topic.accent}`}>
+            <span class="eyebrow plain" style="color:var(--topic);">{topic.index} · {topic.title}</span>
+            <h3 style="margin-top:0.35rem;">{lab.title}</h3>
+            <p class="lab-goal">{lab.goal}</p>
+            <div class="lab-foot">
+              <div class="lab-deliverable"><b>Deliverable</b> · {lab.deliverable}</div>
+              <a class="lab-code" href={url(`/topics/${topic.slug}/#labs`)}>打开完整主题 Lab ↗</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="callout">
+        <b>下载起步代码：</b>
+        <a href={url("/labs/truth_table.py")}>truth_table.py</a> ·
+        <a href={url("/labs/dpll.py")}>dpll.py</a> ·
+        <a href={url("/labs/simplex.py")}>simplex.py</a> ·
+        <a href={url("/labs/smt_examples.smt2")}>smt_examples.smt2</a> ·
+        <a href={url("/labs/lean_basics.lean")}>lean_basics.lean</a> ·
+        <a href={url("/labs/tla_example.tla")}>tla_example.tla</a>
+        <br />
+        这些文件是“可改的起点”，不是标准答案。先跑通，再改坏，再修好。
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/labs/truth-table";
+    import "../scripts/labs/dpll";
+    import "../scripts/labs/lp";
+  </script>
+</BaseLayout>

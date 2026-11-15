@@ -1,0 +1,173 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHead from "../components/SectionHead.astro";
+import { tracks, weeklyRhythm } from "../data/site";
+import { topics, totalStats } from "../data/topics";
+import { url } from "../lib/url";
+
+const comparison = [
+  { goal: "形式化数学 / 逻辑研究", track: "逻辑与证明", math: "高", code: "中", output: "Lean/Agda 形式化 + 论文笔记" },
+  { goal: "算法 / 运筹 / 机器学习理论", track: "计算与优化", math: "高", code: "高", output: "复杂度实验 + 优化模型/证书" },
+  { goal: "安全关键系统 / 云安全 / 芯片", track: "形式化工程", math: "中", code: "高", output: "TLA+/Dafny/Verus 验证流水线" },
+];
+---
+
+<BaseLayout title="路线图" description="三条 12 个月学习路线：逻辑与证明、计算与优化、形式化工程。含阶段目标、每月产出、每周节奏与常见错误。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Roadmap / 12 months</span>
+      <h1>路线图：从好奇到可展示的产物</h1>
+      <p class="lead">
+        不要按“教材章节”学习，按“能做出什么”组织。每条路线 12 个月、4 个阶段，
+        每阶段一个可展示产物；你可以只走其中一条，也可以在阶段之间切换。
+      </p>
+      <div class="hero-meta row mt-2">
+        <span class="badge">{totalStats.topics} 个主题</span>
+        <span class="badge">3 条路线</span>
+        <span class="badge">12 个月</span>
+        <span class="badge">每周 6–8 小时</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHead eyebrow="01 / CHOOSE" title="先选目标，再选路线">
+        <p>
+          三条路线共享“数学逻辑”作为入口，但之后的重点不同。不要因为“看起来更硬核”而选逻辑与证明；
+          先问自己想做哪一种产物。
+        </p>
+      </SectionHead>
+      <div class="data-table-wrap" style="overflow-x:auto;border:1px solid var(--line);">
+        <table class="data-table compare-table">
+          <thead>
+            <tr><th>目标</th><th>路线</th><th class="hide-mobile">数学密度</th><th class="hide-mobile">代码密度</th><th>代表产物</th></tr>
+          </thead>
+          <tbody>
+            {comparison.map((row) => (
+              <tr>
+                <td>{row.goal}</td>
+                <td>{row.track}</td>
+                <td class="hide-mobile">{row.math}</td>
+                <td class="hide-mobile">{row.code}</td>
+                <td>{row.output}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="callout mt-3">
+        <b>一个实用规则：</b>如果你还说不清自己想做什么，先走“逻辑与证明”的前 3 个月。
+        它同时是另外两条路线的共同基础，而且能最快暴露你是否真的喜欢形式化。
+      </div>
+    </div>
+  </section>
+
+  {tracks.map((track, index) => (
+    <section class="track-detail" id={track.id}>
+      <div class="wrap">
+        <div class="track-detail-head">
+          <div>
+            <span class="eyebrow">Route 0{index + 1} / {track.en}</span>
+            <h2>{track.title}</h2>
+            <p class="lead" style="margin-top:0.6rem;">{track.tagline}</p>
+          </div>
+          <div class="outcome">
+            <strong>适合：</strong>{track.audience}<br />
+            <strong>终点：</strong>{track.outcome}
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:1.2rem;">
+          {track.topics.map((slug) => {
+            const topic = topics.find((item) => item.slug === slug);
+            return topic ? <a class="badge" href={url(`/topics/${topic.slug}/`)}>{topic.index} · {topic.title}</a> : null;
+          })}
+        </div>
+
+        <div class="phase-grid">
+          {track.phases.map((phase, i) => (
+            <div class="phase">
+              <span class="m">PHASE 0{i + 1} · {phase.months}</span>
+              <b>{phase.name}</b>
+              <p>{phase.focus}</p>
+              <div class="deliverable"><b>OUTPUT</b><br />{phase.deliverable}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHead eyebrow="02 / RHYTHM" title="每周 6–8 小时，怎么分配">
+        <p>
+          关键不是“每天学多久”，而是四种活动都发生：精读、手写证明、写代码、回顾。
+          如果某一周只能做两件事，选“手写证明”和“Lab”。
+        </p>
+      </SectionHead>
+      <div class="rhythm">
+        {weeklyRhythm.map((item) => (
+          <div class="rhythm-card">
+            <div class="t">{item.time}</div>
+            <b>{item.label}</b>
+            <p>{item.detail}</p>
+          </div>
+        ))}
+      </div>
+      <div class="callout mt-3">
+        <b>月度节奏：</b>第 1 周读概念，第 2 周做习题，第 3 周做 Lab，第 4 周写复盘并公开一个产物。
+        公开很重要：它迫使你把“我看懂了”变成“我能解释”。
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHead eyebrow="03 / TRAPS" title="五个常见错误">
+        <p>这些错误比“选错教材”更常见，也更消耗时间。</p>
+      </SectionHead>
+      <div class="principles">
+        <div class="principle">
+          <b>01 · 收集代替学习</b>
+          <p>收藏 20 本书、10 门课，却没有跑通一个例子。每主题只允许一本主教材。</p>
+        </div>
+        <div class="principle">
+          <b>02 · 跳过手写证明</b>
+          <p>直接打开 Lean/Coq，把 tactic 当魔法。先在纸上写 10 个证明，再让机器检查。</p>
+        </div>
+        <div class="principle">
+          <b>03 · 把工具当理论</b>
+          <p>会用 Z3 不等于懂 SMT；会 `simp` 不等于懂类型论。工具是验证理解的方式，不是替代品。</p>
+        </div>
+        <div class="principle">
+          <b>04 · 只做玩具问题</b>
+          <p>Lab 要有一个“真实约束”：真实数据、真实规格、真实性能。否则学不到边界。</p>
+        </div>
+        <div class="principle">
+          <b>05 · 相信“AI 证明”标题</b>
+          <p>先问语句、公理、检查器、独立复核。内核接受只是必要条件。</p>
+        </div>
+        <div class="principle">
+          <b>06 · 不做复盘</b>
+          <p>每个 Lab 写 5 行：做了什么、卡在哪、怎么解决、下次怎么更快、还有什么不懂。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="callout" style="display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between;">
+        <div>
+          <b>下一步：</b>选一条路线，打开第一个主题，完成第一个 Lab。
+        </div>
+        <div class="row">
+          <a class="btn" href={url("/topics/mathematical-logic/")}>从数学逻辑开始</a>
+          <a class="btn btn-ghost" href={url("/labs/")}>先做交互实验</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

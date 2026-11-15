@@ -1,0 +1,16 @@
+---
+import type { ClaimStatus } from "../data/types";
+import { statusMeta } from "../data/site";
+
+interface Props {
+  status: ClaimStatus;
+  compact?: boolean;
+}
+
+const { status, compact = false } = Astro.props;
+const meta = statusMeta[status];
+---
+
+<span class:list={["status", `status-${status}`]} title={meta.desc}>
+  {compact ? meta.short : meta.label}
+</span>

@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { topics } from "../data/topics";
+import type { Topic, Tool } from "../data/types";
+
+interface AggregatedTool {
+  tool: Tool;
+  domains: Topic[];
+}
+
+const map = new Map<string, AggregatedTool>();
+for (const topic of topics) {
+  for (const tool of topic.tools) {
+    const existing = map.get(tool.name);
+    if (existing) {
+      if (!existing.domains.some((domain) => domain.slug === topic.slug)) {
+        existing.domains.push(topic);
+      }
+    } else {
+      map.set(tool.name, { tool, domains: [topic] });
+    }
+  }
+}
+
+const aggregated = [...map.values()].sort((a, b) => a.tool.name.localeCompare(b.tool.name));
+const kindLabel: Record<Tool["kind"], string> = { open: "开源", commercial: "商业", research: "研究" };
+const openCount = aggregated.filter((item) => item.tool.kind === "open").length;
+const commercialCount = aggregated.filter((item) => item.tool.kind === "commercial").length;
+const researchCount = aggregated.filter((item) => item.tool.kind === "research").length;
+---
+
+<BaseLayout title="工具全景" description="跨七个主题的开源、商业与研究工具全景：Lean、Rocq、Isabelle、Z3、cvc5、Gurobi、TLA+、Verus、Catlab、HiGHS 等，可按领域、类型与关键词筛选。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Tools / {aggregated.length} entries</span>
+      <h1>工具全景</h1>
+      <p class="lead">
+        从证明助手到 SAT/SMT 求解器，从范畴论建模到工业优化。这里把七个主题的工具去重汇总，
+        标注开源/商业/研究、语言与许可。工具会过期，选择标准比排名更重要。
+      </p>
+      <div class="row mt-2">
+        <span class="badge badge-open">开源 {openCount}</span>
+        <span class="badge badge-commercial">商业 {commercialCount}</span>
+        <span class="badge badge-research">研究 {researchCount}</span>
+        <span class="badge">去重后 {aggregated.length}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="wrap">
+      <div class="filter-bar" role="search">
+        <input class="search-input" id="tool-search" type="search" placeholder="搜索工具、语言、用途…" aria-label="搜索工具" />
+        <select class="select-input" id="tool-domain" aria-label="按主题筛选">
+          <option value="">全部主题</option>
+          {topics.map((topic) => <option value={topic.slug}>{topic.index} · {topic.title}</option>)}
+        </select>
+        <select class="select-input" id="tool-kind" aria-label="按类型筛选">
+          <option value="">全部类型</option>
+          <option value="open">开源</option>
+          <option value="commercial">商业</option>
+          <option value="research">研究</option>
+        </select>
+        <span class="filter-count" id="tool-count">{aggregated.length} 个工具</span>
+      </div>
+
+      <div class="browse-grid" id="tool-grid">
+        {aggregated.map(({ tool, domains }) => {
+          const haystack = [
+            tool.name,
+            tool.note,
+            tool.lang,
+            tool.license,
+            ...tool.tags,
+            ...domains.map((domain) => `${domain.title} ${domain.en}`),
+          ].join(" ").toLowerCase();
+          return (
+            <a
+              class="browse-card"
+              href={tool.url}
+              rel="noopener"
+              data-domain={domains.map((domain) => domain.slug).join(" ")}
+              data-kind={tool.kind}
+              data-search={haystack}
+            >
+              <span class="domain">
+                {domains.map((domain) => `${domain.index} ${domain.title}`).join(" · ")}
+              </span>
+              <h3>{tool.name}</h3>
+              <div class="meta">{kindLabel[tool.kind]} · {tool.lang} · {tool.license}</div>
+              <p>{tool.note}</p>
+              <div class="tags">
+                <span class:list={["badge", tool.kind === "open" ? "badge-open" : tool.kind === "commercial" ? "badge-commercial" : "badge-research"]}>
+                  {kindLabel[tool.kind]}
+                </span>
+                {tool.tags.map((tag) => <span class="badge">{tag}</span>)}
+              </div>
+              <span class="link">打开官网 ↗</span>
+            </a>
+          );
+        })}
+      </div>
+      <p class="filter-empty" id="tool-empty">没有匹配的工具。试试清空筛选，或换一个关键词。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="callout">
+        <b>怎么选：</b>先按“问题类型”选，而不是按“排行榜”选。证明数学用 Lean/Rocq/Isabelle；
+        程序验证用 Dafny/Verus/TLA+；SMT 用 Z3/cvc5；优化用 HiGHS/SCIP/Gurobi；
+        范畴论建模用 Catlab/DisCoPy。每个主题页都有更细的取舍说明。
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/tools-filter";
+  </script>
+</BaseLayout>
