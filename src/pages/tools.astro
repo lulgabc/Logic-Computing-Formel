@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { topics, totalStats } from "../data/topics";
+import { url } from "../lib/url";
 import type { Topic, Tool } from "../data/types";
 
 interface AggregatedTool {
@@ -44,6 +45,7 @@ const researchCount = aggregated.filter((item) => item.tool.kind === "research")
         <span class="badge badge-research">研究 {researchCount}</span>
         <span class="badge">去重 {aggregated.length}</span>
         <span class="badge">跨主题条目 {totalStats.toolEntries}</span>
+        <a class="badge" href={url("/quickstart/")}>安装与快速开始 →</a>
       </div>
     </div>
   </section>

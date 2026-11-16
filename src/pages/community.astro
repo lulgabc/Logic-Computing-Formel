@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { community } from "../data/community";
+import { topics } from "../data/topics";
+
+const topicMap = new Map(topics.map((topic) => [topic.slug, topic]));
+const entries = [...community].sort((a, b) => a.name.localeCompare(b.name, "en"));
+---
+
+<BaseLayout title="会议与社区" description="计算、逻辑与形式化相关的会议、竞赛与社区：ASL、LICS、ICFP、ACT、STOC、FOCS、CCC、SAT Competition、SMT-COMP、ETAPS、Lean Zulip、MOS、INFORMS 等。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Community / {entries.length} entries</span>
+      <h1>会议、竞赛与社区</h1>
+      <p class="lead">
+        学习地图不能只有书和工具。会议决定“什么算前沿”，竞赛给出可复现的基线，社区负责回答你卡住的那个具体问题。
+        这里只收录入口稳定、对自学者有用的社区；不追求覆盖所有会议。
+      </p>
+      <div class="row mt-2">
+        <span class="badge">{entries.length} 个入口</span>
+        <span class="badge">会议 / 竞赛 / 问答</span>
+        <span class="badge">7 个主题</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="wrap">
+      <div class="filter-bar" role="search">
+        <input class="search-input" id="community-search" type="search" placeholder="搜索会议、竞赛、社区…" aria-label="搜索社区" />
+        <select class="select-input" id="community-domain" aria-label="按主题筛选">
+          <option value="">全部主题</option>
+          {topics.map((topic) => <option value={topic.slug}>{topic.index} · {topic.title}</option>)}
+        </select>
+        <span class="filter-count" id="community-count">{entries.length} 个入口</span>
+      </div>
+
+      <div class="browse-grid" id="community-grid">
+        {entries.map((entry) => {
+          const topic = topicMap.get(entry.topic);
+          const haystack = [entry.name, entry.kind, entry.scope, entry.note, topic?.title ?? ""].join(" ").toLowerCase();
+          return (
+            <a class="browse-card" href={entry.url} rel="noopener" data-domain={entry.topic} data-search={haystack}>
+              <span class="domain">{topic ? `${topic.index} · ${topic.title}` : "社区"}</span>
+              <h3>{entry.name}</h3>
+              <div class="meta">{entry.kind} · {entry.scope}</div>
+              <p>{entry.note}</p>
+              <div class="tags">
+                <span class="badge">{entry.kind}</span>
+                <span class="badge">{entry.scope}</span>
+              </div>
+              <span class="link">打开 ↗</span>
+            </a>
+          );
+        })}
+      </div>
+      <p class="filter-empty" id="community-empty">没有匹配的社区。试试清空筛选，或换一个关键词。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="callout">
+        <b>怎么参与：</b>先读一次 CFP 或会议议程，看看这个社区在问什么问题；再挑一篇论文做复现，
+        在 Zulip/Stack Exchange 提一个具体问题；最后试着提交一个 benchmark、proof 或 workshop 短文。
+        比“潜水十年”更有效。
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/community-filter";
+  </script>
+</BaseLayout>

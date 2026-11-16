@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { quickstart, quickstartGroups } from "../data/quickstart";
+import { totalStats } from "../data/topics";
+import { url } from "../lib/url";
+
+const groups = quickstartGroups.map((group, index) => ({
+  group,
+  id: `quick-group-${index + 1}`,
+  items: quickstart.filter((item) => item.group === group),
+}));
+---
+
+<BaseLayout title="快速开始" description="常用证明助手、SAT/SMT、形式化验证与优化工具的安装命令与第一个验证命令：Lean、Rocq、Agda、Z3、cvc5、CaDiCaL、TLA+、Dafny、Verus、Kani、CVXPY、HiGHS、SCIP 等。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Quickstart / {quickstart.length} tools</span>
+      <h1>快速开始：装好，跑通，再读理论</h1>
+      <p class="lead">
+        这是最常用工具的安装索引，不是 {totalStats.tools} 个工具的全量手册。命令以 macOS / Linux 为例；
+        复杂工具（Isabelle、Rocq 版本切换、Verus）请同时看官方安装页。原则：先让 <code>--version</code> 通过，再跑第一个例子。
+      </p>
+      <div class="row mt-2">
+        <span class="badge">{quickstart.length} 个工具</span>
+        <span class="badge">6 个分组</span>
+        <span class="badge">安装 + 验证命令</span>
+        <a class="badge" href={url("/tools/")}>回到工具全景 →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="wrap">
+      <div class="callout">
+        <b>先检查环境：</b>
+        <pre style="margin:0.7rem 0 0;"><code>node -v && python3 --version && java -version && dotnet --version && rustc --version</code></pre>
+        如果某一行报错，先装对应运行时。Windows 建议用 WSL2；macOS 用 Homebrew + nvm + Python venv 最省心。
+      </div>
+
+      {groups.map((group) => (
+        <div class="quick-group" id={group.id}>
+          <div class="section-title">
+            <span class="n">{String(groups.indexOf(group) + 1).padStart(2, "0")}</span>
+            <h2>{group.group}</h2>
+            <span class="aside">{group.items.length} 个工具</span>
+          </div>
+          <div class="quick-grid">
+            {group.items.map((item) => (
+              <div class="quick-card">
+                <div class="quick-head">
+                  <div>
+                    <span class="quick-group-label">{item.group}</span>
+                    <h3>{item.tool}</h3>
+                  </div>
+                  <span class="badge">安装</span>
+                </div>
+                <p class="quick-note">{item.note}</p>
+                <div class="quick-code">
+                  <div class="quick-code-head">
+                    <span>install + verify</span>
+                    <button class="quick-copy" type="button">复制</button>
+                  </div>
+                  <pre><code>{item.install.join("\n")}
+# verify
+{item.verify}</code></pre>
+                </div>
+                <a class="quick-link" href={item.url} rel="noopener">官方安装页 / 文档 ↗</a>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div class="callout mt-4">
+        <b>安装失败时：</b>先确认版本与 PATH，再查官方 issue。不要同时装多个版本管理器（nvm + brew node、opam + system OCaml）而不隔离环境；
+        版本冲突是初学者最常见的“工具坏了”。
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/quickstart";
+  </script>
+</BaseLayout>

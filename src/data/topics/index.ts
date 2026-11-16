@@ -41,5 +41,6 @@ export const totalStats = {
   tools: uniqueTools.size,
   toolEntries,
   labs: topics.reduce((sum, topic) => sum + topic.labs.length, 0),
+  papers: topics.reduce((sum, topic) => sum + topic.papers.length, 0),
   checkpoints: topics.reduce((sum, topic) => sum + topic.checkpoints.length, 0),
 };

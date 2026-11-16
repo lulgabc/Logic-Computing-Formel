@@ -1,0 +1,133 @@
+export type CommunityKind = "学会 / 会议" | "竞赛" | "社区 / 问答";
+
+export interface CommunityEntry {
+  name: string;
+  kind: CommunityKind;
+  scope: string;
+  topic: string;
+  url: string;
+  note: string;
+}
+
+export const community: CommunityEntry[] = [
+  {
+    name: "Association for Symbolic Logic (ASL)",
+    kind: "学会 / 会议",
+    scope: "逻辑",
+    topic: "mathematical-logic",
+    url: "https://aslonline.org/",
+    note: "符号逻辑的国际学会；期刊、会议与逻辑学社区入口。",
+  },
+  {
+    name: "LICS",
+    kind: "学会 / 会议",
+    scope: "逻辑 / 类型 / 范畴",
+    topic: "mathematical-logic",
+    url: "https://lics.siglog.org/",
+    note: "IEEE Symposium on Logic in Computer Science；逻辑、类型论、范畴论与程序的交叉会议。",
+  },
+  {
+    name: "ICFP",
+    kind: "学会 / 会议",
+    scope: "类型 / PL",
+    topic: "type-theory",
+    url: "https://icfpconference.org/",
+    note: "International Conference on Functional Programming；类型系统、效应与依赖类型的应用前沿。",
+  },
+  {
+    name: "ACT",
+    kind: "学会 / 会议",
+    scope: "范畴论",
+    topic: "category-theory",
+    url: "https://appliedcategorytheory.org/",
+    note: "Applied Category Theory 会议与 Adjoint School；应用范畴论的主社区。",
+  },
+  {
+    name: "STOC",
+    kind: "学会 / 会议",
+    scope: "复杂度 / 算法",
+    topic: "computability-complexity",
+    url: "https://acm-stoc.org/",
+    note: "ACM Symposium on Theory of Computing；理论计算机科学顶级会议之一。",
+  },
+  {
+    name: "FOCS",
+    kind: "学会 / 会议",
+    scope: "复杂度 / 算法",
+    topic: "computability-complexity",
+    url: "https://ieee-focs.org/",
+    note: "IEEE Foundations of Computer Science；与 STOC 并列的理论计算机科学顶级会议。",
+  },
+  {
+    name: "CCC",
+    kind: "学会 / 会议",
+    scope: "复杂度",
+    topic: "computability-complexity",
+    url: "https://computationalcomplexity.org/",
+    note: "Computational Complexity Conference；复杂度理论最集中的年度会议。",
+  },
+  {
+    name: "SAT Competition",
+    kind: "竞赛",
+    scope: "SAT",
+    topic: "sat-smt-proof",
+    url: "https://satcompetition.github.io/",
+    note: "年度 SAT 求解器与基准竞赛；证明日志和 AI 调优 track 是近年重点。",
+  },
+  {
+    name: "SMT-COMP",
+    kind: "竞赛",
+    scope: "SMT",
+    topic: "sat-smt-proof",
+    url: "https://smt-comp.github.io/",
+    note: "SMT solver 年度竞赛；单查询、增量、并行、模型验证等 track。",
+  },
+  {
+    name: "ETAPS",
+    kind: "学会 / 会议",
+    scope: "形式化 / 验证",
+    topic: "formal-methods",
+    url: "https://etaps.org/",
+    note: "European Joint Conferences on Theory and Practice of Software；TACAS、FASE 等会议的家。",
+  },
+  {
+    name: "Lean Zulip",
+    kind: "社区 / 问答",
+    scope: "Proof Assistant",
+    topic: "sat-smt-proof",
+    url: "https://leanprover.zulipchat.com/",
+    note: "Lean/Mathlib 的主要实时社区；提问、找合作者、跟踪版本与库变化。",
+  },
+  {
+    name: "Proof Assistants Stack Exchange",
+    kind: "社区 / 问答",
+    scope: "Proof Assistant",
+    topic: "sat-smt-proof",
+    url: "https://proofassistants.stackexchange.com/",
+    note: "跨 Lean/Rocq/Isabelle/Agda 的问答社区；适合查具体证明与工具问题。",
+  },
+  {
+    name: "TLA+ Google Group",
+    kind: "社区 / 问答",
+    scope: "形式化 / 规约",
+    topic: "formal-methods",
+    url: "https://groups.google.com/g/tlaplus",
+    note: "TLA+ 用户与开发者社区；规格建模、模型检测与工业实践讨论。",
+  },
+  {
+    name: "Mathematical Optimization Society (MOS)",
+    kind: "学会 / 会议",
+    scope: "优化",
+    topic: "optimization",
+    url: "https://www.mathopt.org/",
+    note: "数学优化国际学会；ICCOPT、MOPTA 等会议与期刊入口。",
+  },
+  {
+    name: "INFORMS",
+    kind: "学会 / 会议",
+    scope: "运筹 / 优化",
+    topic: "optimization",
+    url: "https://www.informs.org/",
+    note: "运筹学与管理科学学会；优化、供应链、决策科学的工业与学术社区。",
+  },
+];

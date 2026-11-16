@@ -14,6 +14,7 @@
   - 学习路径：4 个阶段、时间估计、每阶段产物
   - 课程：6–8 门公开课 / 在线教材，标注难度、形式与用途
   - 参考书：8–11 本，标注“先读 / 主教材 / 进阶 / 工具书”
+  - 论文阅读：每个主题 4–5 篇，按阅读顺序给出“为什么读”和入口
   - 最新发展：2025–2026 的动态，逐条标注 **已核实 / 报道 / 待复核**
   - 工具：开源、商业、研究工具，标注语言、许可、主流/特色
   - 实践 Lab：3–5 个可运行项目，含步骤、交付物、延伸方向
@@ -25,8 +26,11 @@
   - DPLL SAT 求解器（带决策/传播/冲突轨迹）
   - 二维线性规划几何（可行域、目标等值线、无界/不可行）
 - **工具全景** — 跨主题去重汇总，可按领域、类型、关键词筛选；附“四个典型场景”选择指南。
+- **快速开始** — 22 个常用工具的安装命令与 `--version` 验证，覆盖 Lean、Rocq、Agda、Z3、cvc5、TLA+、Dafny、Verus、Kani、CVXPY、HiGHS、SCIP 等。
+- **全站搜索** — 搜索 400+ 条条目：课程、书、论文、工具、术语、前沿动态、Lab、会议与页面，支持类型与主题筛选。
 - **课程与书单** — 按主题、难度筛选；课程 / 书单双 tab。
 - **术语表** — 56 个跨主题核心术语，可按主题、关键词筛选，并链接回对应主题。
+- **会议与社区** — 15 个稳定的会议、竞赛与问答入口：ASL、LICS、ICFP、ACT、STOC、FOCS、CCC、SAT/SMT-COMP、ETAPS、Lean Zulip、MOS、INFORMS 等。
 - **起步代码** — `public/labs/` 下的 Python / SMT-LIB / Lean / TLA+ 文件。
 - **深色/浅色主题**、响应式布局、本地进度保存、静态生成、可打印。
 
@@ -90,18 +94,24 @@ src/
     types.ts              # Topic / Course / Book / Tool / Lab 类型
     site.ts               # 三条路线、首页动态、内容原则、状态定义
     glossary.ts           # 56 个跨主题术语
-    topics/               # 七个主题的数据文件
+    community.ts          # 会议、竞赛与社区入口
+    quickstart.ts         # 22 个工具的安装命令
+    topics/               # 七个主题的数据文件（含论文阅读清单）
   pages/
     index.astro           # 首页
     roadmap.astro         # 三条路线
     topics/[slug].astro   # 主题详情（静态生成）
     tools.astro           # 工具全景 + 筛选 + 场景选择指南
+    quickstart.astro      # 22 个工具的安装与验证命令
     resources.astro       # 课程/书单 + 筛选
     glossary.astro        # 术语表 + 筛选
+    community.astro       # 会议、竞赛与社区 + 筛选
+    search.astro          # 全站搜索（400+ 条索引）
     labs.astro            # 三个交互实验 + Lab 阶梯
     about.astro           # 方法、状态、许可
   scripts/
     main.ts               # 主题切换、移动导航、滚动 reveal、目录 spy
+    search.ts             # 全站搜索（JSON 索引 + 类型/主题筛选）
     progress.ts           # 自检清单 localStorage
     tools-filter.ts       # 工具筛选
     resources-filter.ts   # 资源筛选

@@ -50,6 +50,16 @@ export interface Lab {
   code?: string;
 }
 
+export interface Paper {
+  order: number;
+  title: string;
+  authors: string;
+  year: string;
+  venue: string;
+  why: string;
+  url: string;
+}
+
 export interface Stage {
   title: string;
   weeks: string;
@@ -82,6 +92,7 @@ export interface Topic {
   latest: LatestItem[];
   tools: Tool[];
   labs: Lab[];
+  papers: Paper[];
   misconceptions: { myth: string; truth: string }[];
   checkpoints: string[];
   connections: { slug: string; note: string }[];

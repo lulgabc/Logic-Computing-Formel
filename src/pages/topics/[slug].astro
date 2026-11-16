@@ -27,6 +27,7 @@ const sections = [
   ["path", "路径"],
   ["courses", "课程"],
   ["books", "书单"],
+  ["papers", "论文"],
   ["latest", "前沿"],
   ["tools", "工具"],
   ["labs", "实践"],
@@ -239,10 +240,41 @@ const sections = [
         </div>
       </section>
 
-      <section class="topic-section" id="latest">
+      <section class="topic-section" id="papers">
         <div class="wrap">
           <div class="section-title">
             <span class="n">05</span>
+            <h2>论文阅读</h2>
+            <span class="aside">{topic.papers.length} 篇 · 按顺序</span>
+          </div>
+          <p class="prose" style="font-size:0.86rem;color:var(--muted);">
+            每篇只给“为什么读”和入口，不替你读。建议按顺序：第一遍读摘要、引言、主定理；
+            第二遍看证明骨架；第三遍复现一个引理或实验。
+          </p>
+          <div class="paper-list">
+            {topic.papers.map((paper) => (
+              <a class="paper-item" href={paper.url} rel="noopener">
+                <span class="paper-order">R{paper.order}</span>
+                <span class="paper-body">
+                  <span class="paper-title">{paper.title}</span>
+                  <span class="paper-meta">{paper.authors} · {paper.year} · {paper.venue}</span>
+                  <span class="paper-why">{paper.why}</span>
+                </span>
+                <span class="paper-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+          <div class="callout mt-3">
+            <b>读论文的最低标准：</b>能用自己的话复述问题、主定理、证明的两个关键步骤，
+            以及它没有解决什么。只收藏 PDF 不算读过。
+          </div>
+        </div>
+      </section>
+
+      <section class="topic-section" id="latest">
+        <div class="wrap">
+          <div class="section-title">
+            <span class="n">06</span>
             <h2>最新发展</h2>
             <span class="aside">2025–2026 · 状态标记</span>
           </div>
@@ -274,7 +306,7 @@ const sections = [
       <section class="topic-section" id="tools">
         <div class="wrap">
           <div class="section-title">
-            <span class="n">06</span>
+            <span class="n">07</span>
             <h2>工具</h2>
             <span class="aside">{topic.tools.length} 个 · 开源 / 商业 / 研究</span>
           </div>
@@ -340,7 +372,7 @@ const sections = [
       <section class="topic-section" id="labs">
         <div class="wrap">
           <div class="section-title">
-            <span class="n">07</span>
+            <span class="n">08</span>
             <h2>实践 Lab</h2>
             <span class="aside">{topic.labs.length} 个 · 每个都要有产物</span>
           </div>
@@ -367,7 +399,7 @@ const sections = [
       <section class="topic-section" id="checkpoints">
         <div class="wrap">
           <div class="section-title">
-            <span class="n">08</span>
+            <span class="n">09</span>
             <h2>自检清单</h2>
             <span class="aside">勾选会保存在本地浏览器</span>
           </div>

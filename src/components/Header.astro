@@ -52,6 +52,12 @@ const isActive = (href: string) => (href === "/" ? current === "/" : current.sta
     </nav>
 
     <div class="header-actions">
+      <a class="icon-btn search-toggle" href={url("/search/")} aria-label="全站搜索" title="全站搜索">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.6-3.6" />
+        </svg>
+      </a>
       <button class="icon-btn theme-toggle" type="button" aria-label="切换深色 / 浅色主题" title="切换主题">
         <span class="theme-icon" aria-hidden="true">◐</span>
       </button>

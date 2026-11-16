@@ -1,0 +1,226 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { topics, totalStats } from "../data/topics";
+import { glossary } from "../data/glossary";
+import { community } from "../data/community";
+import { quickstart } from "../data/quickstart";
+import { url } from "../lib/url";
+
+type SearchType = "主题" | "前沿" | "课程" | "书" | "论文" | "工具" | "术语" | "Lab" | "社区" | "页面";
+
+interface SearchEntry {
+  type: SearchType;
+  title: string;
+  subtitle: string;
+  body: string;
+  url: string;
+  topic?: string;
+  topics?: string[];
+  external?: boolean;
+  keywords: string;
+}
+
+const entries: SearchEntry[] = [];
+const topicTitle = new Map(topics.map((topic) => [topic.slug, topic.title]));
+
+for (const topic of topics) {
+  entries.push({
+    type: "主题",
+    title: topic.title,
+    subtitle: `${topic.en} · ${topic.tagline}`,
+    body: topic.intro.lead,
+    url: url(`/topics/${topic.slug}/`),
+    topic: topic.slug,
+    keywords: `${topic.title} ${topic.en} ${topic.tagline} ${topic.intro.lead} ${topic.prerequisites.join(" ")}`,
+  });
+  for (const item of topic.latest) {
+    entries.push({
+      type: "前沿",
+      title: item.title,
+      subtitle: `${topic.title} · ${item.date}`,
+      body: item.body,
+      url: url(`/topics/${topic.slug}/#latest`),
+      topic: topic.slug,
+      keywords: `${item.title} ${item.body} ${item.date} ${topic.title}`,
+    });
+  }
+  for (const course of topic.courses) {
+    entries.push({
+      type: "课程",
+      title: course.name,
+      subtitle: `${topic.title} · ${course.org} · ${course.level}`,
+      body: course.note,
+      url: course.url,
+      topic: topic.slug,
+      external: true,
+      keywords: `${course.name} ${course.org} ${course.note} ${course.format} ${course.level} ${topic.title}`,
+    });
+  }
+  for (const book of topic.books) {
+    entries.push({
+      type: "书",
+      title: book.title,
+      subtitle: `${topic.title} · ${book.authors} · ${book.year}`,
+      body: book.note,
+      url: book.url ?? url(`/topics/${topic.slug}/#books`),
+      topic: topic.slug,
+      external: Boolean(book.url),
+      keywords: `${book.title} ${book.authors} ${book.note} ${book.use} ${book.level} ${topic.title}`,
+    });
+  }
+  for (const paper of topic.papers) {
+    entries.push({
+      type: "论文",
+      title: paper.title,
+      subtitle: `${topic.title} · ${paper.authors} · ${paper.year} · ${paper.venue}`,
+      body: paper.why,
+      url: paper.url,
+      topic: topic.slug,
+      external: true,
+      keywords: `${paper.title} ${paper.authors} ${paper.year} ${paper.venue} ${paper.why} ${topic.title}`,
+    });
+  }
+  for (const lab of topic.labs) {
+    entries.push({
+      type: "Lab",
+      title: lab.title,
+      subtitle: `${topic.title} · 实践`,
+      body: lab.goal,
+      url: url(`/topics/${topic.slug}/#labs`),
+      topic: topic.slug,
+      keywords: `${lab.title} ${lab.goal} ${lab.deliverable} ${lab.stretch ?? ""} ${topic.title}`,
+    });
+  }
+}
+
+const toolMap = new Map<string, { tool: (typeof topics)[number]["tools"][number]; domains: { slug: string; title: string }[] }>();
+for (const topic of topics) {
+  for (const tool of topic.tools) {
+    const existing = toolMap.get(tool.name);
+    if (existing) {
+      if (!existing.domains.some((domain) => domain.slug === topic.slug)) {
+        existing.domains.push({ slug: topic.slug, title: topic.title });
+      }
+    } else {
+      toolMap.set(tool.name, { tool, domains: [{ slug: topic.slug, title: topic.title }] });
+    }
+  }
+}
+for (const { tool, domains } of toolMap.values()) {
+  entries.push({
+    type: "工具",
+    title: tool.name,
+    subtitle: `${domains.map((domain) => domain.title).join(" / ")} · ${tool.lang} · ${tool.license}`,
+    body: tool.note,
+    url: tool.url,
+    topics: domains.map((domain) => domain.slug),
+    external: true,
+    keywords: `${tool.name} ${tool.note} ${tool.lang} ${tool.license} ${tool.tags.join(" ")} ${domains.map((domain) => domain.title).join(" ")}`,
+  });
+}
+
+for (const term of glossary) {
+  entries.push({
+    type: "术语",
+    title: term.term,
+    subtitle: `${topicTitle.get(term.topic) ?? "术语"} · ${term.en}`,
+    body: term.def,
+    url: url("/glossary/"),
+    topic: term.topic,
+    keywords: `${term.term} ${term.en} ${term.def} ${topicTitle.get(term.topic) ?? ""}`,
+  });
+}
+
+for (const item of community) {
+  entries.push({
+    type: "社区",
+    title: item.name,
+    subtitle: `${item.kind} · ${item.scope}`,
+    body: item.note,
+    url: item.url,
+    topic: item.topic,
+    external: true,
+    keywords: `${item.name} ${item.kind} ${item.scope} ${item.note} ${topicTitle.get(item.topic) ?? ""}`,
+  });
+}
+
+const pages = [
+  ["路线图", "三条 12 个月学习路线", "roadmap"],
+  ["工具全景", `${totalStats.tools} 个去重工具与场景选择指南`, "tools"],
+  ["快速开始", `${quickstart.length} 个工具的安装与验证命令`, "quickstart"],
+  ["课程与书单", `${totalStats.courses} 门课程、${totalStats.books} 本书`, "resources"],
+  ["术语表", `${glossary.length} 个跨主题术语`, "glossary"],
+  ["会议与社区", "会议、竞赛与问答入口", "community"],
+  ["实验室", "真值表、DPLL、二维 LP", "labs"],
+  ["关于", "内容原则、状态标记与许可", "about"],
+] as const;
+for (const [title, body, slug] of pages) {
+  entries.push({
+    type: "页面",
+    title,
+    subtitle: "站点页面",
+    body,
+    url: url(`/${slug}/`),
+    keywords: `${title} ${body} ${slug}`,
+  });
+}
+
+const typeOrder: SearchType[] = ["主题", "前沿", "课程", "书", "论文", "工具", "术语", "Lab", "社区", "页面"];
+const typeCounts = typeOrder.map((type) => ({ type, count: entries.filter((entry) => entry.type === type).length }));
+const indexJson = JSON.stringify(entries).replace(/</g, "\\u003c");
+---
+
+<BaseLayout title="全站搜索" description="搜索《计算，逻辑与形式化》全部内容：课程、参考书、论文、工具、术语、Lab、会议与社区。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Search / {entries.length} entries</span>
+      <h1>全站搜索</h1>
+      <p class="lead">
+        跨课程、书、论文、工具、术语、Lab 与社区搜索。输入英文术语或中文关键词都可以；
+        结果会按标题与正文的相关性排序。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="wrap">
+      <div class="search-box">
+        <input id="search-input" class="search-input search-input-lg" type="search" placeholder="搜索：Lean、Yoneda、NP-hard、KKT、DPLL(T)…" aria-label="全站搜索" autocomplete="off" />
+        <kbd>/</kbd>
+      </div>
+      <div class="search-types" id="search-types" role="group" aria-label="按类型筛选">
+        <button class="search-type-btn is-active" type="button" data-search-type="all">全部 <span>{entries.length}</span></button>
+        {typeCounts.map((item) => (
+          <button class="search-type-btn" type="button" data-search-type={item.type}>{item.type} <span>{item.count}</span></button>
+        ))}
+      </div>
+      <div class="filter-bar search-filter-bar" role="search">
+        <select class="select-input" id="search-domain" aria-label="按主题筛选">
+          <option value="">全部主题</option>
+          {topics.map((topic) => <option value={topic.slug}>{topic.index} · {topic.title}</option>)}
+        </select>
+        <span class="filter-count" id="search-count">输入关键词开始</span>
+      </div>
+
+      <div class="search-hint" id="search-hint">
+        <p class="mono">TRY / 可以搜什么</p>
+        <div class="search-hint-grid">
+          <div><b>证明与逻辑</b><span>soundness · completeness · Gödel · Lean</span></div>
+          <div><b>类型与范畴</b><span>Curry–Howard · univalence · Yoneda · monad</span></div>
+          <div><b>计算与复杂度</b><span>P vs NP · NP-complete · SETH · circuit</span></div>
+          <div><b>形式化与验证</b><span>TLA+ · Dafny · Verus · separation logic</span></div>
+          <div><b>优化</b><span>KKT · duality · simplex · interior point</span></div>
+          <div><b>自动推理</b><span>CDCL · DRAT · DPLL(T) · SMT-LIB</span></div>
+        </div>
+      </div>
+
+      <div class="search-results" id="search-results" hidden></div>
+      <p class="filter-empty" id="search-empty" hidden>没有匹配结果。试试更短的关键词，或清空类型/主题筛选。</p>
+    </div>
+  </section>
+
+  <script id="search-index" type="application/json" set:html={indexJson}></script>
+  <script>
+    import "../scripts/search";
+  </script>
+</BaseLayout>
