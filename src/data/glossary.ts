@@ -355,4 +355,354 @@ export const glossary: GlossaryTerm[] = [
     topic: "sat-smt-proof",
     def: "证明助手的可信核心；所有证明最终由它按规则检查，内核 bug 会破坏整个可信链。",
   },
+
+  // 01 数学逻辑 · 扩充
+  {
+    term: "有效性",
+    en: "Validity",
+    topic: "mathematical-logic",
+    def: "公式在所有结构/赋值下都为真；与“在某个模型中为真”不同。",
+  },
+  {
+    term: "可满足性",
+    en: "Satisfiability",
+    topic: "mathematical-logic",
+    def: "存在至少一个模型/赋值使公式为真；SAT 问题就是命题公式的可满足性判定。",
+  },
+  {
+    term: "自然演绎",
+    en: "Natural Deduction",
+    topic: "mathematical-logic",
+    def: "以引入/消去规则刻画逻辑连接词的证明系统；Curry–Howard 对应的标准载体。",
+  },
+  {
+    term: "切割消除",
+    en: "Cut Elimination",
+    topic: "mathematical-logic",
+    def: "相继式演算中消除切割规则的过程；得到无引理的直接证明，是证明论的核心定理。",
+  },
+  {
+    term: "量词消去",
+    en: "Quantifier Elimination",
+    topic: "mathematical-logic",
+    def: "把含量词的公式等价变换为无量词公式；实数闭域、Presburger 算术等理论具有此性质。",
+  },
+  {
+    term: "力迫",
+    en: "Forcing",
+    topic: "mathematical-logic",
+    def: "Cohen 发明的构造集合论模型的方法；通过泛型滤子添加新集合，证明独立性结果。",
+  },
+  {
+    term: "序数",
+    en: "Ordinal",
+    topic: "mathematical-logic",
+    def: "良序集的序型；用于超限归纳与递归，是集合论中“长度”的推广。",
+  },
+  {
+    term: "基数",
+    en: "Cardinal",
+    topic: "mathematical-logic",
+    def: "衡量集合大小的序数；可数、不可数、连续统基数等概念的基础。",
+  },
+
+  // 02 类型论 · 扩充
+  {
+    term: "简单类型 λ 演算",
+    en: "Simply Typed Lambda Calculus",
+    topic: "type-theory",
+    def: "只含函数类型的 λ 演算；STLC 的 progress/preservation 是类型系统元定理的入门。",
+  },
+  {
+    term: "归纳类型",
+    en: "Inductive Type",
+    topic: "type-theory",
+    def: "由构造子生成的类型，如 Nat、List、Vec；递归器/归纳器是其消去规则。",
+  },
+  {
+    term: "宇宙",
+    en: "Universe",
+    topic: "type-theory",
+    def: "类型本身的类型；通过宇宙层级避免 Girard 悖论，让类型论保持一致。",
+  },
+  {
+    term: "规范化",
+    en: "Normalization",
+    topic: "type-theory",
+    def: "每个项都能归约到规范形式；强规范化保证类型检查与证明检查终止。",
+  },
+  {
+    term: "Canonicity",
+    en: "Canonicity",
+    topic: "type-theory",
+    def: "闭的规范项必须归约到构造子形式；是类型论“计算意义”的核心性质。",
+  },
+  {
+    term: "线性类型",
+    en: "Linear Type",
+    topic: "type-theory",
+    def: "每个值恰好使用一次的类型；用于资源管理、并发协议与量子计算。",
+  },
+  {
+    term: "代数效应",
+    en: "Algebraic Effects",
+    topic: "type-theory",
+    def: "把副作用抽象为可组合的操作与处理器；Koka、Unison 等语言的核心。",
+  },
+  {
+    term: "高阶归纳类型",
+    en: "Higher Inductive Type",
+    topic: "type-theory",
+    def: "除构造子外还带路径构造子的归纳类型；HoTT 中用来构造商、截断与基本群。",
+  },
+
+  // 03 范畴论 · 扩充
+  {
+    term: "态射",
+    en: "Morphism",
+    topic: "category-theory",
+    def: "范畴中对象之间的箭头；组合与单位律是范畴公理的核心。",
+  },
+  {
+    term: "同构",
+    en: "Isomorphism",
+    topic: "category-theory",
+    def: "存在双向态射且复合为单位；范畴论中“相同”的最基本形式。",
+  },
+  {
+    term: "泛性质",
+    en: "Universal Property",
+    topic: "category-theory",
+    def: "用“对任意对象存在唯一态射”刻画构造；积、极限、自由对象都由泛性质定义。",
+  },
+  {
+    term: "笛闭范畴",
+    en: "Cartesian Closed Category",
+    topic: "category-theory",
+    def: "有有限积与指数对象的范畴；简单类型 λ 演算的范畴语义。",
+  },
+  {
+    term: "丰富范畴",
+    en: "Enriched Category",
+    topic: "category-theory",
+    def: "Hom 集替换为某个 monoidal 范畴中的对象；度量空间、2-范畴等都可这样看。",
+  },
+  {
+    term: "高阶范畴",
+    en: "Higher Category",
+    topic: "category-theory",
+    def: "除对象与态射外还有 2-态射、3-态射……的范畴；用于同伦论与定向类型论。",
+  },
+  {
+    term: "字符串图",
+    en: "String Diagram",
+    topic: "category-theory",
+    def: "monoidal 范畴中态射的图形表示；线表示对象，盒子表示态射，组合对应连线。",
+  },
+  {
+    term: "Kan 扩展",
+    en: "Kan Extension",
+    topic: "category-theory",
+    def: "沿函子“最佳地”扩展另一个函子；左/右 Kan 扩展统一了极限、伴随与数据库迁移。",
+  },
+
+  // 04 计算理论与复杂度 · 扩充
+  {
+    term: "多项式归约",
+    en: "Polynomial-Time Reduction",
+    topic: "computability-complexity",
+    def: "用多项式时间算法把问题 A 的实例转换成 B 的实例；NP-完全性定义的核心。",
+  },
+  {
+    term: "PSPACE",
+    en: "PSPACE",
+    topic: "computability-complexity",
+    def: "多项式空间可解的问题类；包含 NP，典型完全问题是 QBF。",
+  },
+  {
+    term: "BPP",
+    en: "Bounded-Error Probabilistic Polynomial Time",
+    topic: "computability-complexity",
+    def: "允许有界错误概率的多项式时间随机算法类；随机性是否必要仍是开放问题。",
+  },
+  {
+    term: "FPT",
+    en: "Fixed-Parameter Tractable",
+    topic: "computability-complexity",
+    def: "运行时间为 f(k)·poly(n) 的参数化算法类；把指数爆炸限制在参数 k 上。",
+  },
+  {
+    term: "近似算法",
+    en: "Approximation Algorithm",
+    topic: "computability-complexity",
+    def: "在多项式时间内给出接近最优解的算法；近似比与不可近似性由 PCP 等工具研究。",
+  },
+  {
+    term: "下界",
+    en: "Lower Bound",
+    topic: "computability-complexity",
+    def: "证明某类问题至少需要多少资源；比上界更难，常依赖归约、对角线或通信复杂度。",
+  },
+  {
+    term: "PCP 定理",
+    en: "PCP Theorem",
+    topic: "computability-complexity",
+    def: "NP = PCP(log n, 1)；用常数次随机查询即可概率检查证明，推出大量不可近似性。",
+  },
+  {
+    term: "图灵完备",
+    en: "Turing Complete",
+    topic: "computability-complexity",
+    def: "一个计算模型能模拟任意图灵机；大多数通用编程语言、λ 演算与细胞自动机都图灵完备。",
+  },
+
+  // 05 形式化方法与验证 · 扩充
+  {
+    term: "安全性",
+    en: "Safety",
+    topic: "formal-methods",
+    def: "“坏事永远不会发生”的性质；可用有限前缀反例反驳，如互斥、越界。",
+  },
+  {
+    term: "活性",
+    en: "Liveness",
+    topic: "formal-methods",
+    def: "“好事最终会发生”的性质；如终止、最终响应、无饥饿，通常需要公平性假设。",
+  },
+  {
+    term: "时序逻辑",
+    en: "Temporal Logic",
+    topic: "formal-methods",
+    def: "用 G/F/X/U 等算子描述时间性质；LTL、CTL 是模型检测的标准规格语言。",
+  },
+  {
+    term: "状态空间爆炸",
+    en: "State Explosion",
+    topic: "formal-methods",
+    def: "并发系统状态数随组件指数增长；模型检测的主要可扩展性障碍。",
+  },
+  {
+    term: "最弱前置条件",
+    en: "Weakest Precondition",
+    topic: "formal-methods",
+    def: "使程序终止并满足后置条件的最弱前置断言；WP 演算是演绎验证的核心。",
+  },
+  {
+    term: "循环不变量",
+    en: "Loop Invariant",
+    topic: "formal-methods",
+    def: "循环每次迭代前后都成立的断言；用于归纳证明循环正确性。",
+  },
+  {
+    term: "符号执行",
+    en: "Symbolic Execution",
+    topic: "formal-methods",
+    def: "用符号值而非具体输入执行程序，沿路径收集约束并交给 SMT；可生成测试或找错误。",
+  },
+  {
+    term: "运行时验证",
+    en: "Runtime Verification",
+    topic: "formal-methods",
+    def: "在程序运行时监控轨迹是否满足规格；比静态验证更轻量，但只覆盖实际执行路径。",
+  },
+
+  // 06 优化理论 · 扩充
+  {
+    term: "单纯形法",
+    en: "Simplex Method",
+    topic: "optimization",
+    def: "沿多面体顶点移动的 LP 算法；实践中极快，最坏情况可指数时间。",
+  },
+  {
+    term: "内点法",
+    en: "Interior-Point Method",
+    topic: "optimization",
+    def: "在可行域内部沿中心路径迭代的算法；LP/锥规划有多项式时间保证。",
+  },
+  {
+    term: "强对偶",
+    en: "Strong Duality",
+    topic: "optimization",
+    def: "原问题与对偶问题最优值相等；凸问题在约束品性（如 Slater）下成立。",
+  },
+  {
+    term: "拉格朗日函数",
+    en: "Lagrangian",
+    topic: "optimization",
+    def: "把约束以乘子并入目标的函数；KKT 条件与对偶问题都由它导出。",
+  },
+  {
+    term: "凸锥",
+    en: "Convex Cone",
+    topic: "optimization",
+    def: "对非负线性组合封闭的集合；二阶锥、半正定锥是锥规划的基本构件。",
+  },
+  {
+    term: "梯度下降",
+    en: "Gradient Descent",
+    topic: "optimization",
+    def: "沿负梯度方向迭代的一阶方法；步长与条件数决定收敛速度。",
+  },
+  {
+    term: "ADMM",
+    en: "Alternating Direction Method of Multipliers",
+    topic: "optimization",
+    def: "把问题拆成可分别求解的子问题并交替更新；适合大规模、分布式与嵌入优化。",
+  },
+  {
+    term: "全局最优",
+    en: "Global Optimum",
+    topic: "optimization",
+    def: "在所有可行点中目标值最好的解；非凸/整数问题需要分支定界或全局证书才能确认。",
+  },
+
+  // 07 SAT / SMT / Proof Assistant · 扩充
+  {
+    term: "文字",
+    en: "Literal",
+    topic: "sat-smt-proof",
+    def: "一个变量或其否定，如 x 或 ¬x；CNF 子句由文字组成。",
+  },
+  {
+    term: "子句",
+    en: "Clause",
+    topic: "sat-smt-proof",
+    def: "文字的析取；CNF 是子句的合取，SAT 求解器通常以子句数据库工作。",
+  },
+  {
+    term: "单元传播",
+    en: "Unit Propagation",
+    topic: "sat-smt-proof",
+    def: "当子句只剩一个未赋值文字时强制其赋值；CDCL 与 DPLL 的基本推理步骤。",
+  },
+  {
+    term: "冲突分析",
+    en: "Conflict Analysis",
+    topic: "sat-smt-proof",
+    def: "从冲突图推导学习子句并决定回溯层；CDCL 的核心。",
+  },
+  {
+    term: "监视文字",
+    en: "Watched Literals",
+    topic: "sat-smt-proof",
+    def: "每个子句只监视两个文字，减少传播时的检查量；现代 SAT 求解器的关键数据结构。",
+  },
+  {
+    term: "理论求解器",
+    en: "Theory Solver",
+    topic: "sat-smt-proof",
+    def: "负责某个背景理论（算术、位向量、数组等）的一致性检查与传播；与 SAT 搜索通过 DPLL(T) 组合。",
+  },
+  {
+    term: "量词实例化",
+    en: "Quantifier Instantiation",
+    topic: "sat-smt-proof",
+    def: "为全称量词选择项实例，把量化公式化为无量词公式；SMT 处理量词的主要手段之一。",
+  },
+  {
+    term: "不可满足核心",
+    en: "Unsat Core",
+    topic: "sat-smt-proof",
+    def: "一组导致不可满足的子集；用于调试规格、定位冲突与解释失败。",
+  },
 ];

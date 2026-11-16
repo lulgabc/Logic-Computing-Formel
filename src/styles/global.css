@@ -3759,6 +3759,233 @@ a.icon-btn {
   font-size: 0.62rem;
 }
 
+/* ---------- glossary dictionary ---------- */
+
+.glossary-shell {
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  gap: 1.7rem;
+  align-items: start;
+  margin-top: 1.4rem;
+}
+
+.glossary-index {
+  position: sticky;
+  top: 88px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  padding: 0.35rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  scrollbar-width: thin;
+}
+
+.glossary-group + .glossary-group {
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.glossary-group-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.5rem 0.45rem 0.3rem;
+  background: var(--surface);
+}
+
+.glossary-group-head span {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  color: var(--accent);
+}
+
+.glossary-group-head b {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+}
+
+.glossary-group-head em {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-style: normal;
+  color: var(--muted);
+}
+
+.glossary-index-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  border: 0;
+  border-left: 2px solid transparent;
+  background: transparent;
+  color: var(--ink-2);
+  text-align: left;
+  cursor: pointer;
+}
+
+.glossary-index-item:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.glossary-index-item.is-active {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.glossary-index-term {
+  font-size: 0.77rem;
+}
+
+.glossary-index-en {
+  max-width: 56%;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  color: var(--muted);
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.glossary-detail {
+  min-height: 480px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  padding: clamp(1.2rem, 3.5vw, 2.4rem);
+  scroll-margin-top: 110px;
+}
+
+.glossary-entry-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+}
+
+.glossary-entry h2 {
+  margin-top: 0.55rem;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.glossary-entry-en {
+  margin-top: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.glossary-entry-def {
+  max-width: 68ch;
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-serif);
+  font-size: clamp(1.02rem, 1.6vw, 1.2rem);
+  line-height: 1.8;
+  color: var(--ink);
+}
+
+.glossary-entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--muted);
+}
+
+.glossary-entry-actions a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.glossary-entry-actions a:hover {
+  text-decoration: underline;
+}
+
+.glossary-entry-count {
+  color: var(--muted);
+}
+
+.glossary-related {
+  margin-top: 1.6rem;
+}
+
+.glossary-related h3 {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.glossary-related-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+}
+
+.glossary-select {
+  padding: 0.18rem 0.5rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  cursor: pointer;
+}
+
+.glossary-select:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.glossary-index-item[hidden],
+.glossary-group[hidden],
+.glossary-entry[hidden],
+.glossary-detail[hidden] {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .glossary-shell {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .glossary-index {
+    position: static;
+    max-height: 320px;
+  }
+
+  .glossary-detail {
+    min-height: 0;
+    padding: 1.15rem;
+  }
+
+  .glossary-entry h2 {
+    font-size: 2.1rem;
+  }
+}
+
 /* ---------- quickstart ---------- */
 
 .quick-group {

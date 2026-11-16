@@ -28,9 +28,9 @@
   - 二维线性规划几何（可行域、目标等值线、无界/不可行）
 - **工具全景** — 按七个主题归类，每个主题再分开源/学术与商业/厂商；可按类型、关键词筛选，并附“四个典型场景”选择指南。
 - **快速开始** — 22 个常用工具的安装命令与 `--version` 验证，覆盖 Lean、Rocq、Agda、Z3、cvc5、TLA+、Dafny、Verus、Kani、CVXPY、HiGHS、SCIP 等。
-- **全站搜索** — 搜索 400+ 条条目：课程、书、论文、工具、术语、前沿动态、Lab、复现、会议与页面，支持类型与主题筛选。
+- **全站搜索** — 搜索 500+ 条条目：课程、书、论文、工具、术语、前沿动态、Lab、复现、会议与页面，支持类型与主题筛选。
 - **课程与书单** — 按主题、难度筛选；课程 / 书单双 tab。
-- **术语表** — 56 个跨主题核心术语，可按主题、关键词筛选，并链接回对应主题。
+- **术语表** — 112 个跨主题核心术语，字典式布局：左侧按主题索引，右侧解释；支持筛选与回链。
 - **会议与社区** — 15 个稳定的会议、竞赛与问答入口：ASL、LICS、ICFP、ACT、STOC、FOCS、CCC、SAT/SMT-COMP、ETAPS、Lean Zulip、MOS、INFORMS 等。
 - **起步代码** — `public/labs/` 下的 Python / SMT-LIB / Lean / TLA+ 文件。
 - **深色/浅色主题**、响应式布局、本地进度保存、静态生成、可打印。
@@ -94,7 +94,7 @@ src/
   data/
     types.ts              # Topic / Course / Book / Tool / Lab 类型
     site.ts               # 三条路线、首页动态、内容原则、状态定义
-    glossary.ts           # 56 个跨主题术语
+    glossary.ts           # 112 个跨主题术语
     community.ts          # 会议、竞赛与社区入口
     quickstart.ts         # 22 个工具的安装命令
     paper-guides.ts       # 30 篇论文的中文导读
@@ -107,7 +107,7 @@ src/
     tools.astro           # 工具全景 + 筛选 + 场景选择指南
     quickstart.astro      # 22 个工具的安装与验证命令
     resources.astro       # 课程/书单 + 筛选
-    glossary.astro        # 术语表 + 筛选
+    glossary.astro        # 字典式术语表：左侧索引 + 右侧解释
     community.astro       # 会议、竞赛与社区 + 筛选
     repro.astro           # 14 个论文复现实验 + 本地进度
     search.astro          # 全站搜索（400+ 条索引）

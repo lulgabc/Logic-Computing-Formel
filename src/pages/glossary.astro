@@ -4,21 +4,27 @@ import { glossary } from "../data/glossary";
 import { topics } from "../data/topics";
 import { url } from "../lib/url";
 
-const topicMap = new Map(topics.map((topic) => [topic.slug, topic]));
-const terms = [...glossary].sort((a, b) => a.term.localeCompare(b.term, "zh-CN"));
+const groups = topics.map((topic) => ({
+  topic,
+  terms: glossary
+    .filter((term) => term.topic === topic.slug)
+    .sort((a, b) => a.term.localeCompare(b.term, "zh-CN")),
+}));
+const allTerms = groups.flatMap((group) => group.terms);
+const initialTerm = allTerms[0];
 ---
 
-<BaseLayout title="术语表" description={`计算、逻辑与形式化术语速查：可靠性、完备性、Curry–Howard、Yoneda、NP-完全、KKT、CDCL、DRAT/LRAT、DPLL(T) 等 ${glossary.length} 个核心概念。`}>
+<BaseLayout title="术语表" description={`计算、逻辑与形式化术语速查：${glossary.length} 个核心概念，左侧按主题索引，右侧显示中文解释与英文原名。`}>
   <section class="page-hero">
     <div class="wrap">
-      <span class="eyebrow">Glossary / {terms.length} terms</span>
+      <span class="eyebrow">Glossary / {glossary.length} terms</span>
       <h1>术语表</h1>
       <p class="lead">
-        跨主题的术语速查。每个定义尽量只保留“最小可用直觉”，并链接回对应主题。
-        术语不是装饰：如果一个词你不能用它做判断、写证明或选工具，就还没有真正掌握。
+        像查字典一样使用：左边是按主题分组的术语索引，右边是当前术语的解释。
+        每个定义尽量只保留“最小可用直觉”，并链接回对应主题。
       </p>
       <div class="row mt-2">
-        <span class="badge">{terms.length} 个术语</span>
+        <span class="badge">{glossary.length} 个术语</span>
         <span class="badge">7 个主题</span>
         <span class="badge">中文解释 · 英文原名</span>
       </div>
@@ -28,29 +34,74 @@ const terms = [...glossary].sort((a, b) => a.term.localeCompare(b.term, "zh-CN")
   <section class="section" style="padding-top:1.5rem;">
     <div class="wrap">
       <div class="filter-bar" role="search">
-        <input class="search-input" id="glossary-search" type="search" placeholder="搜索术语、英文名、主题…" aria-label="搜索术语" />
+        <input class="search-input" id="glossary-search" type="search" placeholder="搜索术语、英文名、解释…" aria-label="搜索术语" />
         <select class="select-input" id="glossary-domain" aria-label="按主题筛选">
           <option value="">全部主题</option>
           {topics.map((topic) => <option value={topic.slug}>{topic.index} · {topic.title}</option>)}
         </select>
-        <span class="filter-count" id="glossary-count">{terms.length} 个术语</span>
+        <span class="filter-count" id="glossary-count">{glossary.length} 个术语</span>
       </div>
 
-      <div class="browse-grid" id="glossary-grid">
-        {terms.map((term) => {
-          const topic = topicMap.get(term.topic);
-          const haystack = [term.term, term.en, term.def, topic?.title ?? "", topic?.en ?? ""].join(" ").toLowerCase();
-          return (
-            <article class="browse-card" data-domain={term.topic} data-search={haystack}>
-              <span class="domain">{topic ? `${topic.index} · ${topic.title}` : "术语"}</span>
-              <h3>{term.term} <span class="term-en">{term.en}</span></h3>
-              <p>{term.def}</p>
-              <div class="tags"><span class="badge">术语</span></div>
-              {topic && <a class="link" href={url(`/topics/${topic.slug}/`)}>回到主题 ↗</a>}
-            </article>
-          );
-        })}
+      <div class="glossary-shell">
+        <aside class="glossary-index" id="glossary-index" aria-label="术语索引">
+          {groups.map(({ topic, terms }) => (
+            <div class="glossary-group" data-group={topic.slug}>
+              <div class="glossary-group-head">
+                <span>{topic.index}</span>
+                <b>{topic.title}</b>
+                <em>{terms.length}</em>
+              </div>
+              {terms.map((term) => (
+                <button
+                  class="glossary-index-item"
+                  type="button"
+                  data-term={term.term}
+                  data-topic={term.topic}
+                  data-search={`${term.term} ${term.en} ${term.def}`.toLowerCase()}
+                >
+                  <span class="glossary-index-term">{term.term}</span>
+                  <span class="glossary-index-en">{term.en}</span>
+                </button>
+              ))}
+            </div>
+          ))}
+        </aside>
+
+        <div class="glossary-detail" id="glossary-detail">
+          {allTerms.map((term) => {
+            const topic = topics.find((item) => item.slug === term.topic);
+            const related = groups
+              .find((group) => group.topic.slug === term.topic)
+              ?.terms.filter((item) => item.term !== term.term)
+              .slice(0, 4) ?? [];
+            return (
+              <article class="glossary-entry" data-term={term.term} hidden={term.term !== initialTerm.term}>
+                <div class="glossary-entry-kicker">
+                  {topic ? `${topic.index} / ${topic.title}` : "术语"} · {term.en}
+                </div>
+                <h2>{term.term}</h2>
+                <div class="glossary-entry-en">{term.en}</div>
+                <p class="glossary-entry-def">{term.def}</p>
+                <div class="glossary-entry-actions">
+                  {topic && <a href={url(`/topics/${topic.slug}/`)}>回到 {topic.title} →</a>}
+                  <span class="glossary-entry-count">同主题 {groups.find((group) => group.topic.slug === term.topic)?.terms.length ?? 0} 个术语</span>
+                </div>
+                <div class="glossary-related">
+                  <h3>同主题其他术语</h3>
+                  <div class="glossary-related-list">
+                    {related.map((item) => (
+                      <button class="glossary-select" type="button" data-term={item.term}>
+                        {item.term}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
+
       <p class="filter-empty" id="glossary-empty">没有匹配的术语。试试清空筛选，或换一个关键词。</p>
     </div>
   </section>
@@ -65,6 +116,6 @@ const terms = [...glossary].sort((a, b) => a.term.localeCompare(b.term, "zh-CN")
   </section>
 
   <script>
-    import "../scripts/glossary-filter";
+    import "../scripts/glossary";
   </script>
 </BaseLayout>
