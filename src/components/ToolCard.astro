@@ -1,0 +1,40 @@
+---
+import type { Tool, Topic } from "../data/types";
+
+interface Props {
+  tool: Tool;
+  topic?: Topic;
+}
+
+const { tool, topic } = Astro.props;
+const kindLabel: Record<Tool["kind"], string> = { open: "开源", commercial: "商业", research: "研究" };
+const badgeClass = tool.kind === "open" ? "badge-open" : tool.kind === "commercial" ? "badge-commercial" : "badge-research";
+const haystack = [
+  tool.name,
+  tool.note,
+  tool.lang,
+  tool.license,
+  ...tool.tags,
+  topic ? `${topic.title} ${topic.en}` : "",
+].join(" ").toLowerCase();
+---
+
+<a
+  class="tool-card"
+  href={tool.url}
+  rel="noopener"
+  data-kind={tool.kind}
+  data-search={haystack}
+>
+  <div class="tool-head">
+    <div>
+      <div class="tool-name">{tool.name} <span aria-hidden="true">↗</span></div>
+      <div class="tool-tags">
+        <span class:list={["badge", badgeClass]}>{kindLabel[tool.kind]}</span>
+        {tool.tags.map((tag) => <span class="badge">{tag}</span>)}
+      </div>
+    </div>
+  </div>
+  <div class="tool-meta">{tool.lang} · {tool.license}</div>
+  <p class="tool-note">{tool.note}</p>
+</a>

@@ -1,107 +1,102 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ToolCard from "../components/ToolCard.astro";
 import { topics, totalStats } from "../data/topics";
 import { url } from "../lib/url";
-import type { Topic, Tool } from "../data/types";
 
-interface AggregatedTool {
-  tool: Tool;
-  domains: Topic[];
-}
+const sections = topics.map((topic) => ({
+  topic,
+  open: topic.tools.filter((tool) => tool.kind !== "commercial"),
+  commercial: topic.tools.filter((tool) => tool.kind === "commercial"),
+}));
 
-const map = new Map<string, AggregatedTool>();
-for (const topic of topics) {
-  for (const tool of topic.tools) {
-    const existing = map.get(tool.name);
-    if (existing) {
-      if (!existing.domains.some((domain) => domain.slug === topic.slug)) {
-        existing.domains.push(topic);
-      }
-    } else {
-      map.set(tool.name, { tool, domains: [topic] });
-    }
-  }
-}
-
-const aggregated = [...map.values()].sort((a, b) => a.tool.name.localeCompare(b.tool.name));
-const kindLabel: Record<Tool["kind"], string> = { open: "开源", commercial: "商业", research: "研究" };
-const openCount = aggregated.filter((item) => item.tool.kind === "open").length;
-const commercialCount = aggregated.filter((item) => item.tool.kind === "commercial").length;
-const researchCount = aggregated.filter((item) => item.tool.kind === "research").length;
+const allEntries = topics.flatMap((topic) => topic.tools.map((tool) => ({ topic, tool })));
+const openCount = allEntries.filter(({ tool }) => tool.kind === "open").length;
+const commercialCount = allEntries.filter(({ tool }) => tool.kind === "commercial").length;
+const researchCount = allEntries.filter(({ tool }) => tool.kind === "research").length;
 ---
 
-<BaseLayout title="工具全景" description="跨七个主题的开源、商业与研究工具全景：Lean、Rocq、Isabelle、Z3、cvc5、Gurobi、TLA+、Verus、Catlab、HiGHS 等，可按领域、类型与关键词筛选。">
+<BaseLayout title="工具全景" description="按七个主题归类的开源、商业与研究工具全景：Lean、Rocq、Isabelle、Z3、cvc5、Gurobi、TLA+、Verus、Catlab、HiGHS 等，可按类型与关键词筛选。">
   <section class="page-hero">
     <div class="wrap">
-      <span class="eyebrow">Tools / {aggregated.length} entries</span>
+      <span class="eyebrow">Tools / {totalStats.toolEntries} entries</span>
       <h1>工具全景</h1>
       <p class="lead">
-        从证明助手到 SAT/SMT 求解器，从范畴论建模到工业优化。这里把七个主题的工具去重汇总，
-        标注开源/商业/研究、语言与许可。工具会过期，选择标准比排名更重要。
+        从证明助手到 SAT/SMT 求解器，从范畴论建模到工业优化。这里按七个主题归类，
+        每个主题再分“开源 / 学术”和“商业 / 厂商”。同一工具可能出现在多个主题中，这是有意的：
+        它确实在不同主题里承担不同角色。
       </p>
       <div class="row mt-2">
         <span class="badge badge-open">开源 {openCount}</span>
         <span class="badge badge-commercial">商业 {commercialCount}</span>
         <span class="badge badge-research">研究 {researchCount}</span>
-        <span class="badge">去重 {aggregated.length}</span>
-        <span class="badge">跨主题条目 {totalStats.toolEntries}</span>
+        <span class="badge">{totalStats.tools} 个去重工具</span>
+        <span class="badge">{totalStats.toolEntries} 个主题条目</span>
         <a class="badge" href={url("/quickstart/")}>安装与快速开始 →</a>
       </div>
     </div>
   </section>
 
+  <nav class="tools-topic-nav" aria-label="工具主题导航">
+    <div class="wrap">
+      {topics.map((topic) => (
+        <a href={`#${topic.slug}`}>{topic.index} · {topic.title} <span>{topic.tools.length}</span></a>
+      ))}
+    </div>
+  </nav>
+
   <section class="section" style="padding-top:1.5rem;">
     <div class="wrap">
       <div class="filter-bar" role="search">
         <input class="search-input" id="tool-search" type="search" placeholder="搜索工具、语言、用途…" aria-label="搜索工具" />
-        <select class="select-input" id="tool-domain" aria-label="按主题筛选">
-          <option value="">全部主题</option>
-          {topics.map((topic) => <option value={topic.slug}>{topic.index} · {topic.title}</option>)}
-        </select>
         <select class="select-input" id="tool-kind" aria-label="按类型筛选">
           <option value="">全部类型</option>
           <option value="open">开源</option>
           <option value="commercial">商业</option>
           <option value="research">研究</option>
         </select>
-        <span class="filter-count" id="tool-count">{aggregated.length} 个工具</span>
+        <span class="filter-count" id="tool-count">{totalStats.toolEntries} 个主题条目</span>
       </div>
 
-      <div class="browse-grid" id="tool-grid">
-        {aggregated.map(({ tool, domains }) => {
-          const haystack = [
-            tool.name,
-            tool.note,
-            tool.lang,
-            tool.license,
-            ...tool.tags,
-            ...domains.map((domain) => `${domain.title} ${domain.en}`),
-          ].join(" ").toLowerCase();
-          return (
-            <a
-              class="browse-card"
-              href={tool.url}
-              rel="noopener"
-              data-domain={domains.map((domain) => domain.slug).join(" ")}
-              data-kind={tool.kind}
-              data-search={haystack}
-            >
-              <span class="domain">
-                {domains.map((domain) => `${domain.index} ${domain.title}`).join(" · ")}
-              </span>
-              <h3>{tool.name}</h3>
-              <div class="meta">{kindLabel[tool.kind]} · {tool.lang} · {tool.license}</div>
-              <p>{tool.note}</p>
-              <div class="tags">
-                <span class:list={["badge", tool.kind === "open" ? "badge-open" : tool.kind === "commercial" ? "badge-commercial" : "badge-research"]}>
-                  {kindLabel[tool.kind]}
-                </span>
-                {tool.tags.map((tag) => <span class="badge">{tag}</span>)}
+      <div id="tool-sections">
+        {sections.map(({ topic, open, commercial }) => (
+          <section class="tool-topic" id={topic.slug} data-total={topic.tools.length} style={`--topic:${topic.accent}`}>
+            <div class="tool-topic-head">
+              <div>
+                <span class="tool-topic-index">TOPIC {topic.index} / {topic.en}</span>
+                <h2>{topic.title}</h2>
               </div>
-              <span class="link">打开官网 ↗</span>
-            </a>
-          );
-        })}
+              <div class="tool-topic-meta">
+                <span class="tool-topic-count" data-total={topic.tools.length}>{topic.tools.length} 个工具</span>
+                <a href={url(`/topics/${topic.slug}/#tools`)}>主题页 →</a>
+              </div>
+            </div>
+
+            {open.length > 0 && (
+              <div class="tool-subgroup" data-total={open.length}>
+                <div class="tool-subgroup-head">
+                  <h3>开源 / 学术</h3>
+                  <span class="tool-subgroup-count" data-total={open.length}>{open.length} 个</span>
+                </div>
+                <div class="tool-grid">
+                  {open.map((tool) => <ToolCard tool={tool} topic={topic} />)}
+                </div>
+              </div>
+            )}
+
+            {commercial.length > 0 && (
+              <div class="tool-subgroup" data-total={commercial.length}>
+                <div class="tool-subgroup-head">
+                  <h3>商业 / 厂商</h3>
+                  <span class="tool-subgroup-count" data-total={commercial.length}>{commercial.length} 个</span>
+                </div>
+                <div class="tool-grid">
+                  {commercial.map((tool) => <ToolCard tool={tool} topic={topic} />)}
+                </div>
+              </div>
+            )}
+          </section>
+        ))}
       </div>
       <p class="filter-empty" id="tool-empty">没有匹配的工具。试试清空筛选，或换一个关键词。</p>
     </div>
