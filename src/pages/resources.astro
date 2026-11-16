@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { topics } from "../data/topics";
+import { url } from "../lib/url";
 import type { Book, Course, Topic } from "../data/types";
 
 interface CourseEntry { course: Course; topic: Topic; }
@@ -100,6 +101,8 @@ const levels = ["入门", "进阶", "研究"];
       <div class="callout">
         <b>阅读建议：</b>主教材读两遍比四本书各读一遍更有效。第一遍只抓定义与定理陈述，
         第二遍做习题并写一页“这章到底在解决什么问题”。课程视频可以加速看，但证明必须自己写。
+        <br /><br />
+        遇到不认识的词，先查 <a href={url("/glossary/")}>术语表</a>，再回到对应主题页看上下文。
       </div>
     </div>
   </section>

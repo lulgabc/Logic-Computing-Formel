@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { topics } from "../data/topics";
+import { topics, totalStats } from "../data/topics";
 import type { Topic, Tool } from "../data/types";
 
 interface AggregatedTool {
@@ -42,7 +42,8 @@ const researchCount = aggregated.filter((item) => item.tool.kind === "research")
         <span class="badge badge-open">开源 {openCount}</span>
         <span class="badge badge-commercial">商业 {commercialCount}</span>
         <span class="badge badge-research">研究 {researchCount}</span>
-        <span class="badge">去重后 {aggregated.length}</span>
+        <span class="badge">去重 {aggregated.length}</span>
+        <span class="badge">跨主题条目 {totalStats.toolEntries}</span>
       </div>
     </div>
   </section>
@@ -105,11 +106,71 @@ const researchCount = aggregated.filter((item) => item.tool.kind === "research")
   </section>
 
   <section class="section">
-    <div class="wrap narrow">
-      <div class="callout">
-        <b>怎么选：</b>先按“问题类型”选，而不是按“排行榜”选。证明数学用 Lean/Rocq/Isabelle；
-        程序验证用 Dafny/Verus/TLA+；SMT 用 Z3/cvc5；优化用 HiGHS/SCIP/Gurobi；
-        范畴论建模用 Catlab/DisCoPy。每个主题页都有更细的取舍说明。
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Choose by scenario</span>
+          <h2>怎么选：四个典型场景</h2>
+        </div>
+        <div class="head-aside">
+          <p>先按“要证明什么”选，而不是按“排行榜”选。工具只是最后一步；语言、库、许可与团队经验同样重要。</p>
+        </div>
+      </div>
+      <div class="choice-grid">
+        <div class="choice-card">
+          <span class="badge badge-open">数学形式化</span>
+          <h3>证明数学定理</h3>
+          <p>先看库与社区，再看语言。大团队/大库通常优先 Lean；需要提取程序或成熟工业链可选 Rocq；重视自动化可选 Isabelle；类型论/HoTT 实验选 Agda。</p>
+          <div class="choice-list">
+            <a href="https://lean-lang.org/" rel="noopener">Lean 4 + Mathlib ↗</a>
+            <a href="https://rocq-prover.org/" rel="noopener">Rocq ↗</a>
+            <a href="https://isabelle.in.tum.de/" rel="noopener">Isabelle/HOL ↗</a>
+            <a href="https://agda.readthedocs.io/" rel="noopener">Agda ↗</a>
+          </div>
+          <p class="choice-note">关键问题：目标定理在哪个库里已有基础？证明要维护多久？是否需要程序提取？</p>
+        </div>
+
+        <div class="choice-card">
+          <span class="badge badge-open">程序验证</span>
+          <h3>验证真实系统</h3>
+          <p>协议/设计阶段先用 TLA+；算法与数据结构用 Dafny；Rust 低层代码用 Verus 或 Kani；C 代码用 CBMC/Frama-C；安全关键 C 可看 Polyspace/Astrée。</p>
+          <div class="choice-list">
+            <a href="https://lamport.azurewebsites.net/tla/tla.html" rel="noopener">TLA+ ↗</a>
+            <a href="https://dafny.org/" rel="noopener">Dafny ↗</a>
+            <a href="https://github.com/verus-lang/verus" rel="noopener">Verus ↗</a>
+            <a href="https://github.com/model-checking/kani" rel="noopener">Kani ↗</a>
+          </div>
+          <p class="choice-note">关键问题：验证的是设计还是实现？规格由谁写？失败时能否给出反例？</p>
+        </div>
+
+        <div class="choice-card">
+          <span class="badge badge-open">自动推理</span>
+          <h3>求解逻辑公式</h3>
+          <p>通用 SMT 先试 Z3/cvc5；位向量优先 Bitwuzla；一阶 ATP 用 Vampire/E；需要可检查的 UNSAT 时，选支持 DRAT/LRAT 的 SAT 求解器并独立检查。</p>
+          <div class="choice-list">
+            <a href="https://github.com/Z3Prover/z3" rel="noopener">Z3 ↗</a>
+            <a href="https://cvc5.github.io/" rel="noopener">cvc5 ↗</a>
+            <a href="https://github.com/arminbiere/cadical" rel="noopener">CaDiCaL ↗</a>
+            <a href="https://vprover.github.io/" rel="noopener">Vampire ↗</a>
+          </div>
+          <p class="choice-note">关键问题：需要模型、unsat core、插值还是完整证明？证书由谁检查？</p>
+        </div>
+
+        <div class="choice-card">
+          <span class="badge badge-open">优化</span>
+          <h3>求解优化模型</h3>
+          <p>LP/MIP 先用 HiGHS 或 SCIP；大规模商业 MIP 用 Gurobi/CPLEX/Xpress；凸建模用 CVXPY/JuMP；嵌入控制用 OSQP/Clarabel；非凸用 Ipopt/SCIP。</p>
+          <div class="choice-list">
+            <a href="https://highs.dev/" rel="noopener">HiGHS ↗</a>
+            <a href="https://www.scipopt.org/" rel="noopener">SCIP ↗</a>
+            <a href="https://www.cvxpy.org/" rel="noopener">CVXPY ↗</a>
+            <a href="https://www.gurobi.com/" rel="noopener">Gurobi ↗</a>
+          </div>
+          <p class="choice-note">关键问题：LP、MIP、凸还是非凸？需要全局最优证书吗？商用许可是否可接受？</p>
+        </div>
+      </div>
+      <div class="callout mt-3">
+        <b>一条底线：</b>工具输出不是证明。SAT 的 UNSAT 要证书，优化要看 gap/对偶界，验证要看规格与内核，AI 证明要看语句是否忠实。
       </div>
     </div>
   </section>

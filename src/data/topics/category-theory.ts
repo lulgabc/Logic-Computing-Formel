@@ -18,6 +18,7 @@ export const categoryTheory: Topic = {
       "范畴论的力量来自“只保留结构”：一个对象不再由内部元素定义，而由它与其他对象之间的箭头定义。Yoneda 引理把这一点推到极致：一个对象由它收到的所有态射完全决定。极限与余极限统一了积、拉回、商、余积等构造；伴随则统一了“自由构造”与“遗忘构造”。",
       "应用范畴论（ACT）把这些工具带到工程：Haskell 的 monad 是自函子范畴上的 monoid；数据库 schema 与迁移可以看成函子；量子电路可以用 dagger 紧致范畴与 ZX-calculus 描述；系统组合用 lens、optics、polynomial functor。",
       "学习建议是“例子优先”。每学一个定义，至少准备三个例子：Set、Grp/Pos、Haskell 类型、数据库 schema、量子电路。不要一开始就追求 ∞-范畴；先把 1-范畴的交换图、泛性质、伴随练熟。",
+      "工具生态少而专：开源主力是 Catlab/DisCoPy/PyZX；商业侧是 Conexus AI 的范畴数据集成与 Quantinuum 的 ZX 编译。范畴论工具卖的通常不是“范畴论”，而是可组合的编译/集成能力。",
     ],
     concepts: [
       { term: "范畴", def: "对象 + 态射 + 组合 + 单位，满足结合律与单位律。" },
@@ -215,7 +216,7 @@ export const categoryTheory: Topic = {
     {
       date: "2026-07",
       title: "ACT 2026 在塔林召开",
-      body: "第九届应用范畴论会议于 2026 年 7 月 6–10 日在爱沙尼亚塔林举行，Adjoint School 于 6 月 29 日–7 月 3 日先行。研究、教学与传播三条 track 表明 ACT 已从“小众交叉”变成有稳定社区的应用方向。",
+      body: "第九届应用范畴论会议于 2026 年 7 月 6–10 日在爱沙尼亚塔林举行，Adjoint School 于 6 月 29 日–7 月 3 日先行。研究、教学与传播等 track 表明 ACT 已从“小众交叉”变成有稳定社区的应用方向。",
       status: "verified",
       source: { label: "ACT 2026", url: "https://actconf2026.github.io/" },
     },
@@ -265,7 +266,7 @@ export const categoryTheory: Topic = {
       lang: "Lean",
       license: "Apache-2.0",
       note: "Mathlib 有大量 1-范畴论；∞-范畴与高阶结构仍在扩展。",
-      url: "https://leanprover-community.github.io/",
+      url: "https://lean-lang.org/",
     },
     {
       name: "DisCoPy",
@@ -299,7 +300,7 @@ export const categoryTheory: Topic = {
       kind: "open",
       tags: ["特色", "教学"],
       lang: "Haskell / JavaScript",
-      license: "BSD-3-Clause",
+      license: "WTFPL",
       note: "用字符串图证明高阶等式；适合直观理解 coherence。",
       url: "https://github.com/jamievicary/globular",
     },
@@ -307,8 +308,8 @@ export const categoryTheory: Topic = {
       name: "homotopy.io",
       kind: "research",
       tags: ["特色", "研究"],
-      lang: "Haskell / JavaScript",
-      license: "BSD-3-Clause",
+      lang: "Rust / WebAssembly",
+      license: "开源",
       note: "高阶范畴的交互式证明助手；用几何直觉构造 coherence 证明。",
       url: "https://homotopy.io/",
     },
@@ -383,7 +384,7 @@ export const categoryTheory: Topic = {
       steps: [
         "用 Catlab.jl 定义两个 schema（学生/课程/选课）。",
         "定义一个 functor 表示 schema 迁移。",
-        "用 `@migrate` 把一个实例沿 functor 推过去，并检查结果。",
+        "用 @migrate 把一个实例沿 functor 推过去，并检查结果。",
       ],
       deliverable: "一个 Julia 脚本 + 迁移前后数据表；解释为什么某些迁移会丢信息。",
       stretch: "实现一个右 Kan 扩展，比较左/右伴随的语义。",
@@ -392,8 +393,8 @@ export const categoryTheory: Topic = {
       title: "Lab 02 · Lean 中的 Yoneda",
       goal: "把“对象由 Hom 函子决定”写成可检查的证明。",
       steps: [
-        "在 Lean/Mathlib 中找到 `yoneda` 相关定义。",
-        "对一个具体范畴（如 `Type` 或 `Preorder`）展开 Yoneda 引理。",
+        "在 Lean/Mathlib 中找到 yoneda 相关定义。",
+        "对一个具体范畴（如 Type 或 Preorder）展开 Yoneda 引理。",
         "证明一个自然变换由某个元素唯一决定。",
       ],
       deliverable: "一个 Lean 文件 + 一页解释：Yoneda 在编程里对应什么（如 CPS）。",
@@ -415,11 +416,25 @@ export const categoryTheory: Topic = {
       goal: "理解范畴量子力学如何把“电路等价”变成“图重写”。",
       steps: [
         "用 PyZX 导入一个量子电路。",
-        "执行 `full_reduce` 或 `clifford_simp`，比较门数。",
+        "执行 full_reduce 或 clifford_simp，比较门数。",
         "验证化简前后电路等价。",
       ],
       deliverable: "一个 Python 脚本 + 化简前后对比图 + 等价性证明。",
       stretch: "实现一个自定义 ZX 重写规则，并证明它保持语义。",
+    },
+  ],
+  misconceptions: [
+    {
+      myth: "范畴论只是把简单的东西抽象化，没有实际用途。",
+      truth: "数据库 schema 迁移、量子电路编译、类型论语义、系统组合都有范畴论工具；它提供的是可组合的接口语言。",
+    },
+    {
+      myth: "交换图看起来交换就足够了。",
+      truth: "交换图只是证明的索引；每条箭头、每个自然性方块都要具体验证。图错一格，结论就可能完全不同。",
+    },
+    {
+      myth: "Monad 就是 Haskell 的 IO。",
+      truth: "IO 只是 monad 的一个实例；monad 还描述不确定性、状态、异常、解析、并发等大量计算结构。",
     },
   ],
   checkpoints: [

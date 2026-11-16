@@ -18,6 +18,7 @@ export const computabilityComplexity: Topic = {
       "可计算性部分的核心是等价模型：Turing 机、λ 演算、递归函数、寄存器机描述的是同一个可计算性概念。停机问题、Rice 定理与归约告诉我们，程序分析、定理证明、病毒检测中有一整类问题不存在通用算法。",
       "复杂度部分的核心是资源与下界：P、NP、PSPACE、电路、随机性、近似、参数化、细粒度、证明复杂度、描述复杂度。P vs NP 之所以重要，不只是“一个开放问题”，而是它决定了大量优化、密码学与 AI 问题是否存在统一的高效算法。",
       "学习时不要把复杂度类图当成地理知识。每学一个类，至少要会：给出一个完整问题、证明它属于该类、用一个归约证明它困难、解释这个困难性对实践意味着什么。2025–2026 年 AI 声称的复杂度突破，更说明“验证”与“形式化”是这门课的必修部分。",
+      "工具生态需要现实一点：复杂度理论本身几乎没有商业 solver；商业化集中在 WCET/静态分析（aiT、Polyspace）、SAT/SMT 求解器与优化求解器。学习阶段以开源工具和论文复现为主。",
     ],
     concepts: [
       { term: "图灵机", def: "有限状态控制 + 无限纸带；是算法直觉的数学化。" },
@@ -327,8 +328,8 @@ export const computabilityComplexity: Topic = {
       tags: ["研究"],
       lang: "Lean",
       license: "Apache-2.0",
-      note: "形式化归约、图灵机与复杂度定义；Mathlib 的 `Computability` 模块可起步。",
-      url: "https://leanprover-community.github.io/",
+      note: "形式化归约、图灵机与复杂度定义；Mathlib 的 Computability 模块可起步。",
+      url: "https://lean-lang.org/",
     },
     {
       name: "Isabelle AFP",
@@ -447,6 +448,20 @@ export const computabilityComplexity: Topic = {
       ],
       deliverable: "一份“声明边界”报告；列出需要哪些独立验证才能接受。",
       stretch: "用 Lean 形式化论文中的一个组合引理。",
+    },
+  ],
+  misconceptions: [
+    {
+      myth: "NP-hard 意味着所有实例都很难。",
+      truth: "NP-hard 是最坏情况下的困难性；典型实例、参数化实例、近似算法和启发式方法仍可能非常有效。",
+    },
+    {
+      myth: "P vs NP 只是理论问题，和工程无关。",
+      truth: "它决定密码学、优化、程序分析与 AI 中大量问题的可行性边界；硬度假定直接影响系统设计。",
+    },
+    {
+      myth: "量子计算机能解决 NP-hard 问题。",
+      truth: "BQP 与 NP 的关系仍未解决；Shor 算法解决的是因数分解/离散对数，不等于 NP-hard 问题。",
     },
   ],
   checkpoints: [

@@ -18,6 +18,7 @@ export const nav = [
   { href: "/topics/mathematical-logic/", label: "主题" },
   { href: "/tools/", label: "工具" },
   { href: "/resources/", label: "资源" },
+  { href: "/glossary/", label: "术语" },
   { href: "/labs/", label: "实验室" },
   { href: "/about/", label: "关于" },
 ];

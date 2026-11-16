@@ -18,6 +18,8 @@ interface Props {
 
 const { topic } = Astro.props;
 const { previous, next } = getAdjacentTopics(topic.slug);
+const dateKey = (date: string) => (date.length === 4 ? `${date}-01` : date);
+const latest = [...topic.latest].sort((a, b) => dateKey(b.date).localeCompare(dateKey(a.date)));
 const openTools = topic.tools.filter((tool) => tool.kind !== "commercial");
 const commercialTools = topic.tools.filter((tool) => tool.kind === "commercial");
 const sections = [
@@ -140,6 +142,16 @@ const sections = [
               </div>
             ))}
           </div>
+
+          <h4 class="mono mt-4" style="font-size:0.68rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;">常见误区 / Misconceptions</h4>
+          <div class="myth-grid">
+            {topic.misconceptions.map((item, i) => (
+              <div class="myth-card">
+                <p class="myth-wrong"><b>误区 0{i + 1}</b>{item.myth}</p>
+                <p class="myth-right"><b>实际</b>{item.truth}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -235,7 +247,7 @@ const sections = [
             <span class="aside">2025–2026 · 状态标记</span>
           </div>
           <ol class="latest-list">
-            {topic.latest.map((item) => (
+            {latest.map((item) => (
               <li class="latest-item">
                 <span class="latest-date">{item.date}</span>
                 <div class="latest-body">

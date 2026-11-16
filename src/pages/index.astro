@@ -8,6 +8,8 @@ import { highlights, principles, tracks } from "../data/site";
 import { url } from "../lib/url";
 
 const featured = topics;
+const dateKey = (date: string) => (date.length === 4 ? `${date}-01` : date);
+const liveHighlights = [...highlights].sort((a, b) => dateKey(b.date).localeCompare(dateKey(a.date)));
 ---
 
 <BaseLayout description="计算，逻辑与形式化：数学逻辑、类型论、范畴论、计算理论与复杂度、形式化验证、优化理论、SAT/SMT/Proof Assistant 的中文学习与实践地图。">
@@ -145,7 +147,7 @@ const featured = topics;
         </p>
       </SectionHead>
       <div class="highlight-list">
-        {highlights.map((item) => (
+        {liveHighlights.map((item) => (
           <a class="highlight" href={url(item.url)}>
             <span class="h-date">{item.date}</span>
             <span>

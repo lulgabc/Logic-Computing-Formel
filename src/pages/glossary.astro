@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { glossary } from "../data/glossary";
+import { topics } from "../data/topics";
+import { url } from "../lib/url";
+
+const topicMap = new Map(topics.map((topic) => [topic.slug, topic]));
+const terms = [...glossary].sort((a, b) => a.term.localeCompare(b.term, "zh-CN"));
+---
+
+<BaseLayout title="术语表" description={`计算、逻辑与形式化术语速查：可靠性、完备性、Curry–Howard、Yoneda、NP-完全、KKT、CDCL、DRAT/LRAT、DPLL(T) 等 ${glossary.length} 个核心概念。`}>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Glossary / {terms.length} terms</span>
+      <h1>术语表</h1>
+      <p class="lead">
+        跨主题的术语速查。每个定义尽量只保留“最小可用直觉”，并链接回对应主题。
+        术语不是装饰：如果一个词你不能用它做判断、写证明或选工具，就还没有真正掌握。
+      </p>
+      <div class="row mt-2">
+        <span class="badge">{terms.length} 个术语</span>
+        <span class="badge">7 个主题</span>
+        <span class="badge">中文解释 · 英文原名</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="wrap">
+      <div class="filter-bar" role="search">
+        <input class="search-input" id="glossary-search" type="search" placeholder="搜索术语、英文名、主题…" aria-label="搜索术语" />
+        <select class="select-input" id="glossary-domain" aria-label="按主题筛选">
+          <option value="">全部主题</option>
+          {topics.map((topic) => <option value={topic.slug}>{topic.index} · {topic.title}</option>)}
+        </select>
+        <span class="filter-count" id="glossary-count">{terms.length} 个术语</span>
+      </div>
+
+      <div class="browse-grid" id="glossary-grid">
+        {terms.map((term) => {
+          const topic = topicMap.get(term.topic);
+          const haystack = [term.term, term.en, term.def, topic?.title ?? "", topic?.en ?? ""].join(" ").toLowerCase();
+          return (
+            <article class="browse-card" data-domain={term.topic} data-search={haystack}>
+              <span class="domain">{topic ? `${topic.index} · ${topic.title}` : "术语"}</span>
+              <h3>{term.term} <span class="term-en">{term.en}</span></h3>
+              <p>{term.def}</p>
+              <div class="tags"><span class="badge">术语</span></div>
+              {topic && <a class="link" href={url(`/topics/${topic.slug}/`)}>回到主题 ↗</a>}
+            </article>
+          );
+        })}
+      </div>
+      <p class="filter-empty" id="glossary-empty">没有匹配的术语。试试清空筛选，或换一个关键词。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="callout">
+        <b>用法建议：</b>读论文时先查术语，再回到主题页看上下文。一个定义如果只能在“选择题”里认出来，
+        却不能在证明或代码里使用，就值得回到对应 Lab 重新做一遍。
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/glossary-filter";
+  </script>
+</BaseLayout>

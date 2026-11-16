@@ -126,7 +126,7 @@ export const formalMethods: Topic = {
       level: "入门 → 进阶",
       format: "在线教程 + 练习",
       url: "https://dafny.org/",
-      note: "从第一个 `method` 到并发与数据结构；适合快速建立验证手感。",
+      note: "从第一个 method 到并发与数据结构；适合快速建立验证手感。",
     },
   ],
   books: [
@@ -217,7 +217,7 @@ export const formalMethods: Topic = {
       year: "2002",
       level: "研究",
       use: "进阶",
-      note: "分离逻辑原始论文；理解 `∗` 与 `↦` 如何解决别名问题。",
+      note: "分离逻辑原始论文；理解 ∗ 与 ↦ 如何解决别名问题。",
       url: "https://www.cs.cmu.edu/~jcr/seplogic.pdf",
     },
     {
@@ -350,7 +350,7 @@ export const formalMethods: Topic = {
       url: "https://creusot.rs/",
     },
     {
-      name: "F*",
+      name: "F* (Microsoft Research)",
       kind: "open",
       tags: ["研究", "工业"],
       lang: "F*",
@@ -417,7 +417,7 @@ export const formalMethods: Topic = {
       kind: "open",
       tags: ["研究", "工业"],
       lang: "Coq/Rocq / C",
-      license: "自定义开源",
+      license: "非商业许可 / 商业许可",
       note: "经过形式化验证的 C 编译器；编译器正确性的标杆。",
       url: "https://compcert.org/",
     },
@@ -530,7 +530,7 @@ export const formalMethods: Topic = {
         "检查一致性、无死锁、最终提交/回滚。",
         "注入消息丢失或重复，观察反例轨迹。",
       ],
-      deliverable: "一个 `.tla` 文件 + 3 条性质 + 反例截图/轨迹。",
+      deliverable: "一个 .tla 文件 + 3 条性质 + 反例截图/轨迹。",
       stretch: "用 Apalache 做符号检查，比较与 TLC 的差异。",
     },
     {
@@ -538,21 +538,21 @@ export const formalMethods: Topic = {
       goal: "把“抽象数据类型”的规格写成契约，并让验证器检查实现。",
       steps: [
         "定义队列的抽象模型（序列）与表示（数组/链表）。",
-        "写 `enqueue`、`dequeue`、`size` 的前后条件与不变量。",
+        "写 enqueue、dequeue、size 的前后条件与不变量。",
         "证明 5 个引理，覆盖边界与容量。",
       ],
-      deliverable: "一个 `dafny verify` 通过的模块 + 一页说明：哪些规格最难写。",
+      deliverable: "一个 dafny verify 通过的模块 + 一页说明：哪些规格最难写。",
       stretch: "实现并发队列，加入线性化规格。",
     },
     {
       title: "Lab 03 · Verus 验证 Rust 二分查找",
       goal: "在真实系统语言中验证功能正确性与内存安全。",
       steps: [
-        "用 Verus 写 `binary_search` 的规格：返回下标或 `None`。",
+        "用 Verus 写 binary_search 的规格：返回下标或 None。",
         "证明循环不变量与终止性。",
         "用 Kani 做有界模型检测，比较两种方法的覆盖。",
       ],
-      deliverable: "一个 `cargo verus verify` 通过的项目 + 对比报告。",
+      deliverable: "一个 cargo verus verify 通过的项目 + 对比报告。",
       stretch: "验证一个无锁栈或 ring buffer。",
     },
     {
@@ -560,11 +560,25 @@ export const formalMethods: Topic = {
       goal: "理解有界模型检测的“边界”与反例。",
       steps: [
         "写一个含越界/溢出的 C 函数。",
-        "用 CBMC 检查 `--bounds-check --pointer-check`。",
+        "用 CBMC 检查 --bounds-check --pointer-check。",
         "修复后再次检查，记录反例与边界。",
       ],
       deliverable: "一个 Makefile + 修复前后报告；解释为什么“没有反例”不等于“证明正确”。",
       stretch: "用 Frama-C/ACSL 写规格并做演绎验证。",
+    },
+  ],
+  misconceptions: [
+    {
+      myth: "形式化验证能保证系统绝对安全。",
+      truth: "它只保证“在给定规格与假设下”的性质；规格错误、环境假设、编译器/硬件与内核可信度仍是边界。",
+    },
+    {
+      myth: "模型检测可以处理任意大的系统。",
+      truth: "状态爆炸是核心限制；需要抽象、符号化、对称性约简、组合推理，或者改用演绎验证。",
+    },
+    {
+      myth: "验证通过就不需要测试。",
+      truth: "规格可能漏掉需求，环境与硬件可能出错；测试、差分测试、模糊测试和运行时监控仍然重要。",
     },
   ],
   checkpoints: [

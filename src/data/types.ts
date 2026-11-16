@@ -82,6 +82,7 @@ export interface Topic {
   latest: LatestItem[];
   tools: Tool[];
   labs: Lab[];
+  misconceptions: { myth: string; truth: string }[];
   checkpoints: string[];
   connections: { slug: string; note: string }[];
 }

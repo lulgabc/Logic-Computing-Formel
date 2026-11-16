@@ -62,7 +62,7 @@ export const satSmtProof: Topic = {
       title: "Proof Assistant",
       weeks: "4–6 周",
       items: ["Lean 或 Rocq", "归纳类型与策略", "库与证明工程", "提取/可信编译"],
-      output: "一个 200 行的形式化项目；用 `#print axioms` 审计公理。",
+      output: "一个 200 行的形式化项目；用 #print axioms 审计公理。",
     },
     {
       title: "前沿",
@@ -77,7 +77,7 @@ export const satSmtProof: Topic = {
       org: "SAT/SMT community",
       level: "进阶",
       format: "暑期学校 + 讲义",
-      url: "https://sat-smt.in/",
+      url: "https://sat-smt.in",
       note: "SAT、SMT、证明日志与应用的集中训练；适合快速进入研究前沿。",
     },
     {
@@ -113,7 +113,7 @@ export const satSmtProof: Topic = {
       note: "用 Isabelle/HOL 写编译器与语义；证明工程的好范例。",
     },
     {
-      name: "Logic and Mechanized Reasoning (15-816)",
+      name: "Logic and Mechanized Reasoning (15-653)",
       org: "Carnegie Mellon University",
       level: "进阶",
       format: "讲义 + Lean",
@@ -264,7 +264,7 @@ export const satSmtProof: Topic = {
       title: "OpenAI 372 组结果的 Lean 验证争议",
       body: "OpenAI 称约一半手稿配有 Lean 形式化，但发布后 3 篇撤回、14 篇修订；部分形式化被指只证明了较弱命题。结论很清楚：内核检查是必要条件，不是“数学正确”的充分条件。",
       status: "pending",
-      source: { label: "OpenAI: Working with academic communities", url: "https://openai.com/index/building-scientific-understanding-with-academic-communities/" },
+      source: { label: "公开复核记录：OpenAI bulk release", url: "https://en.wikipedia.org/wiki/OpenAI_bulk_release_of_mathematical_papers" },
     },
   ],
   tools: [
@@ -422,7 +422,7 @@ export const satSmtProof: Topic = {
       url: "https://alt-ergo.ocamlpro.com/",
     },
     {
-      name: "Lean 4",
+      name: "Lean 4 + Mathlib",
       kind: "open",
       tags: ["主流", "研究"],
       lang: "Lean",
@@ -503,12 +503,12 @@ export const satSmtProof: Topic = {
       url: "https://github.com/SRI-CSL/PVS",
     },
     {
-      name: "Dafny / Why3",
+      name: "Dafny",
       kind: "open",
       tags: ["工业", "主流"],
-      lang: "Dafny / WhyML",
-      license: "MIT / LGPL",
-      note: "验证感知语言与平台；SMT 自动化 + 程序规格。",
+      lang: "Dafny",
+      license: "MIT",
+      note: "验证感知语言；SMT 自动化 + 程序规格；AWS 生产使用。",
       url: "https://dafny.org/",
     },
     {
@@ -584,7 +584,7 @@ export const satSmtProof: Topic = {
         "在冲突时生成 DRAT 子句（学习/删除）。",
         "用 DRAT-trim 检查证明；故意删掉一个学习子句，确认检查失败。",
       ],
-      deliverable: "一个求解器 + `.drat` 文件 + 检查日志。",
+      deliverable: "一个求解器 + .drat 文件 + 检查日志。",
       stretch: "实现 LRAT hints，比较检查时间。",
     },
     {
@@ -593,7 +593,7 @@ export const satSmtProof: Topic = {
       steps: [
         "用 Z3/cvc5 解 10 个 SMT-LIB 问题（EUF、LIA、BV、数组）。",
         "导出模型与 unsat core，手动验证一条约束。",
-        "尝试 `--produce-proofs`，比较不同 solver 的证书格式。",
+        "尝试 --produce-proofs，比较不同 solver 的证书格式。",
       ],
       deliverable: "一个 benchmark 脚本 + 结果表 + 证书对比。",
       stretch: "实现一个小型 EUF 求解器，与 Z3 结果对拍。",
@@ -602,9 +602,9 @@ export const satSmtProof: Topic = {
       title: "Lab 03 · Lean 4 形式化小定理",
       goal: "体验“内核检查”与“策略自动化”的分工。",
       steps: [
-        "证明 `map` 融合、`reverse (reverse xs) = xs` 等基础定理。",
-        "用 `simp`、`induction`、`grind` 各写一版。",
-        "用 `#print axioms` 审计依赖，确认没有 `sorry`。",
+        "证明 map 融合、reverse (reverse xs) = xs 等基础定理。",
+        "用 simp、induction、grind 各写一版。",
+        "用 #print axioms 审计依赖，确认没有 sorry。",
       ],
       deliverable: "一个 Lean 项目 + 证明脚本 + 公理审计报告。",
       stretch: "形式化一个简单的 SAT 求解器正确性特例。",
@@ -630,6 +630,20 @@ export const satSmtProof: Topic = {
       ],
       deliverable: "一个模型 + 结果 + 权重敏感性分析。",
       stretch: "用 OMT（Z3 优化）实现同一问题并比较。",
+    },
+  ],
+  misconceptions: [
+    {
+      myth: "SAT 求解器说 UNSAT，就必然可信。",
+      truth: "求解器可能有 bug；工业与竞赛要求 proof logging（DRAT/LRAT）并用独立检查器验证。UNSAT 也需要证书。",
+    },
+    {
+      myth: "SMT 可以判定所有一阶公式。",
+      truth: "SMT 只在特定可判定理论/片段内可靠；量词、非线性算术、字符串等仍可能不完备或只能半判定。",
+    },
+    {
+      myth: "Proof Assistant 会自动证明一切。",
+      truth: "它是交互式的；自动化有限。AI 能加速写证明，但语句是否忠实、公理是否可接受、证明是否可维护仍要人负责。",
     },
   ],
   checkpoints: [

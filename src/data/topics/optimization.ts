@@ -22,7 +22,7 @@ export const optimization: Topic = {
     concepts: [
       { term: "线性规划", def: "线性目标 + 线性约束；可行域是多面体，最优解在顶点或面上。" },
       { term: "对偶", def: "每个 LP/凸问题都有对偶问题；弱对偶给下界，强对偶在约束品性下成立。" },
-      { term: "KKT", def: "等式/不等式约束下的最优性必要条件；凸问题下也是充分条件。" },
+      { term: "KKT", def: "等式/不等式约束下的最优性必要条件；凸问题且满足约束品性（如 Slater）时也是充分条件。" },
       { term: "凸性", def: "可行集凸、目标凸；任何局部最优都是全局最优。" },
       { term: "锥规划", def: "LP/QP/SOCP/SDP 的统一形式；内点法与一阶方法的主战场。" },
       { term: "次梯度 / 近端", def: "非光滑凸优化的基本工具；近端算子处理复合目标。" },
@@ -247,18 +247,25 @@ export const optimization: Topic = {
       source: { label: "AlphaEvolve", url: "https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/" },
     },
     {
-      date: "2026",
+      date: "2026-11",
+      title: "Gurobi 14.0 进入 actively supported",
+      body: "官方支持表显示 Gurobi 14.0.0 于 2026 年 11 月发布并进入 actively supported；Gurobi 13 的 PDHG/GPU 加速、非线性 barrier 与 Kubernetes 自动扩缩仍是过去一年的主线。商业 MIP 的竞争继续集中在“大模型 + 非线性 + 云原生”。",
+      status: "verified",
+      source: { label: "Gurobi release history", url: "https://support.gurobi.com/hc/en-us/articles/360048138771-Gurobi-release-and-support-history" },
+    },
+    {
+      date: "2025-11",
       title: "Gurobi 13 与 GPU 一阶方法的工业化",
       body: "Gurobi 13 报告 MIP 约 8–16% 加速、MIQP 5–7%、非线性最高 2×；HiGHS、Gurobi、Xpress、COPT 等开始提供 GPU 加速的 PDHG/一阶方法。大规模 LP 的“内点法 vs 一阶法”边界正在移动。",
       status: "verified",
       source: { label: "Gurobi 13", url: "https://www.gurobi.com/company/newsroom/gurobi-releases-version-13-0-with-improved-performance-and-new-solving-capabilities" },
     },
     {
-      date: "2026",
-      title: "CVXPY 1.9 与锥规划建模",
-      body: "CVXPY 1.9 继续改进规范化和锥规划支持；Clarabel、OSQP、SCS 等开源求解器成为默认后端。建模层与求解层的解耦，让“换 solver”成为一行代码。",
+      date: "2026-05",
+      title: "CVXPY 1.9 与 DNLP 建模",
+      body: "CVXPY 1.9 引入 Disciplined Nonlinear Programming（DNLP），把建模从凸优化扩展到一类非线性问题；支持 IPOPT、UNO、COPT、KNITRO 等 NLP solver。Clarabel、OSQP、SCS 仍是默认开源后端，建模层与求解层继续解耦。",
       status: "verified",
-      source: { label: "CVXPY 1.9", url: "https://www.cvxpy.org/" },
+      source: { label: "CVXPY 1.9.0 release", url: "https://github.com/cvxpy/cvxpy/releases/tag/v1.9.0" },
     },
     {
       date: "2026",
@@ -345,7 +352,7 @@ export const optimization: Topic = {
       tags: ["主流", "教学"],
       lang: "Python",
       license: "Apache-2.0",
-      note: "凸优化建模语言；自动规范化、DCP 检查、多 solver 后端。",
+      note: "凸优化建模语言；自动规范化、DCP 检查、多 solver 后端；1.9 起支持 DNLP 非线性建模。",
       url: "https://www.cvxpy.org/",
     },
     {
@@ -435,7 +442,7 @@ export const optimization: Topic = {
       tags: ["主流", "工业"],
       lang: "C++ / Python / Java",
       license: "商业许可",
-      note: "MIP/LP/QP 的工业标杆；Gurobi 13 继续提升非线性与大模型能力。",
+      note: "MIP/LP/QP 的工业标杆；Gurobi 13/14 继续提升非线性与大模型能力。",
       url: "https://www.gurobi.com/",
     },
     {
@@ -593,6 +600,20 @@ export const optimization: Topic = {
       ],
       deliverable: "一份案例报告 + 截图；解释“无界”与“不可行”的区别。",
       stretch: "把二维几何推广到三维，用 Python 画多面体。",
+    },
+  ],
+  misconceptions: [
+    {
+      myth: "凸优化总是容易，非凸优化总是难。",
+      truth: "凸问题的规模、精度、结构决定实际难度；非凸问题的局部方法在实践中常常非常有效，只是缺少全局保证。",
+    },
+    {
+      myth: "Solver 返回一个解，就说明它是全局最优。",
+      truth: "非凸/整数问题需要 gap、对偶界或分支定界证书；局部最优、stationary point 与全局最优不是一回事。",
+    },
+    {
+      myth: "AI 可以替代优化建模，直接给出答案。",
+      truth: "AI 能加速建模与调参，但单位错误、目标偷换、不可行约束仍常见；模型审查与对偶证书不可省。",
     },
   ],
   checkpoints: [

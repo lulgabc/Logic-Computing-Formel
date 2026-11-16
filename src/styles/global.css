@@ -1734,6 +1734,54 @@ hr {
   color: var(--ink-2);
 }
 
+.myth-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.myth-card {
+  padding: 0.8rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.myth-wrong,
+.myth-right {
+  font-size: 0.79rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.myth-wrong b,
+.myth-right b {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.myth-wrong {
+  color: var(--ink);
+}
+
+.myth-wrong b {
+  color: var(--accent);
+}
+
+.myth-right {
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--line);
+}
+
+.myth-right b {
+  color: var(--accent-2);
+}
+
 /* stages */
 
 .stage-list {
@@ -2585,6 +2633,16 @@ hr {
   font-size: 0.95rem;
 }
 
+.term-en {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
 .browse-card .meta {
   margin-top: 0.3rem;
   font-family: var(--font-mono);
@@ -2611,6 +2669,59 @@ hr {
   font-family: var(--font-mono);
   font-size: 0.62rem;
   color: var(--accent);
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.choice-card {
+  padding: 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.choice-card h3 {
+  margin-top: 0.55rem;
+  font-size: 1.08rem;
+}
+
+.choice-card p {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+
+.choice-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.65rem;
+}
+
+.choice-list a {
+  padding: 0.12rem 0.45rem;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+.choice-list a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.choice-note {
+  margin-top: 0.65rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--line);
+  font-size: 0.72rem !important;
+  color: var(--muted) !important;
 }
 
 .tabs {
@@ -3152,7 +3263,8 @@ hr {
   .phase-grid,
   .rhythm,
   .howto,
-  .why-grid {
+  .why-grid,
+  .myth-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -3177,6 +3289,18 @@ hr {
 @media (max-width: 760px) {
   body {
     font-size: 15.5px;
+  }
+
+  .header-inner {
+    gap: 0.4rem;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 0.3rem;
   }
 
   .page-hero h1 {
@@ -3210,6 +3334,8 @@ hr {
   .rhythm,
   .howto,
   .why-grid,
+  .myth-grid,
+  .choice-grid,
   .principles,
   .footer-grid,
   .concept-grid,

@@ -18,6 +18,7 @@ export const mathematicalLogic: Topic = {
       "四条主线值得分开学：命题逻辑与一阶逻辑给出语法和语义；证明论研究“证明”本身的结构；模型论研究结构与满足关系；集合论研究数学对象的宇宙。递归论与不完备性则把“可证”放回“可计算”的边界里。",
       "最重要的分界线是语法与语义。可靠性（soundness）说：能证明的都真；完备性（completeness）说：真的都能证明。二者不是同一件事，也不总同时成立。一阶逻辑同时具备二者，但算术理论不完备；命题逻辑可判定，一阶逻辑不可判定。",
       "今天学逻辑已经不能只读纸面证明。Lean、Rocq、Isabelle 把证明变成可编译、可检查的工件；Z3/cvc5 把一阶片段变成自动搜索；类型论把“证明”和“程序”统一。建议每学一个元定理，就尝试在证明助手里形式化一个特例。",
+      "工具生态有一个现实：研究主力几乎都是开源 proof assistant、ATP 与 SMT；商业侧更多是课程软件、Prolog 实现与 AI 证明服务。选工具时先看库与社区，再看许可。",
     ],
     concepts: [
       { term: "语法 / 语义", def: "符号如何组成公式，与公式在结构中是否为真，是两套独立定义。" },
@@ -79,7 +80,7 @@ export const mathematicalLogic: Topic = {
       note: "从命题逻辑到一阶逻辑与自然演绎，适合作为第一门系统课程。",
     },
     {
-      name: "Logic and Mechanized Reasoning (15-816)",
+      name: "Logic and Mechanized Reasoning (15-653)",
       org: "Carnegie Mellon University",
       level: "进阶",
       format: "讲义 + Lean",
@@ -217,14 +218,14 @@ export const mathematicalLogic: Topic = {
       title: "费马大定理的机器可检查证明完成",
       body: "Anthropic 的 Claude 代理在 Prove2Me 平台上完成了约 29,511 个定理、6 万多个文件的 Lean 证明，最终定理经 Lean 内核与独立 Rust 内核 nanoda 检查；仓库已公开。数学社区仍在审读可读性、可维护性与“证明的是否正是原命题”。Kevin Buzzard 的人类主导 FLT 项目仍在继续。",
       status: "reported",
-      source: { label: "Lean: Formalizing FLT", url: "https://lean-lang.org/use-cases/flt/" },
+      source: { label: "Anthropic: Formalizing FLT", url: "https://www-cdn.anthropic.com/9e431dff043da6538d99d6c2d231b670aa3da263.pdf" },
     },
     {
       date: "2026-10",
       title: "OpenAI 发布 372 组数学结果，验证争议升温",
       body: "OpenAI 公开了 722 篇手稿、372 个结果族，称其中约一半配有 Lean 形式化；发布后数日内 3 篇撤回、14 篇修订。核心争议不是“Lean 是否接受”，而是形式化语句是否忠实于论文命题、以及谁做了独立复核。",
       status: "pending",
-      source: { label: "OpenAI: Working with academic communities", url: "https://openai.com/index/building-scientific-understanding-with-academic-communities/" },
+      source: { label: "公开复核记录：OpenAI bulk release", url: "https://en.wikipedia.org/wiki/OpenAI_bulk_release_of_mathematical_papers" },
     },
     {
       date: "2026-06",
@@ -430,7 +431,7 @@ export const mathematicalLogic: Topic = {
         "枚举变量赋值，输出真值表，判断重言式 / 矛盾式 / 可满足式。",
         "加入 20 个单元测试，覆盖结合性、优先级与错误输入。",
       ],
-      deliverable: "一个 CLI 或网页工具 + 测试报告；能解释为什么 `p → q` 与 `¬p ∨ q` 等价。",
+      deliverable: "一个 CLI 或网页工具 + 测试报告；能解释为什么 p → q 与 ¬p ∨ q 等价。",
       stretch: "把公式转换为 CNF，并接入一个 SAT 求解器验证等价性。",
       code: "/labs/truth_table.py",
     },
@@ -451,9 +452,9 @@ export const mathematicalLogic: Topic = {
       steps: [
         "定义命题公式的语法与赋值语义。",
         "证明语义对 ∧、∨、¬ 的同态性质。",
-        "形式化命题逻辑可靠性的一个特例，并用 `#print axioms` 检查公理。",
+        "形式化命题逻辑可靠性的一个特例，并用 #print axioms 检查公理。",
       ],
-      deliverable: "一个可 `lake build` 的 Lean 项目 + 一页说明：哪些步骤比纸面更难，为什么。",
+      deliverable: "一个可 lake build 的 Lean 项目 + 一页说明：哪些步骤比纸面更难，为什么。",
       stretch: "形式化完备性，或把证明翻译成组合子项。",
       code: "/labs/lean_basics.lean",
     },
@@ -467,6 +468,20 @@ export const mathematicalLogic: Topic = {
       ],
       deliverable: "一份反例报告：公式、模型、解释、以及为什么它推翻了原公式。",
       stretch: "用 Lean 证明其中一个反例模型满足前提但违反结论。",
+    },
+  ],
+  misconceptions: [
+    {
+      myth: "Gödel 不完备定理说明数学不可靠，什么都不能证明。",
+      truth: "它只适用于足够强、可递归公理化且一致的理论；结论是存在既不可证也不可反驳的句子，而不是“所有命题都不可证”。",
+    },
+    {
+      myth: "“真”与“可证”是同一个概念。",
+      truth: "语义真与语法可证是两套定义。一阶逻辑可靠且完备，但具体算术理论可以不完备；这正是元逻辑要区分二者的原因。",
+    },
+    {
+      myth: "一阶逻辑不可判定，所以自动推理没有实用价值。",
+      truth: "不可判定针对一般有效性；命题逻辑、EUF、线性算术、位向量、数组等大量片段可判定，正是 SAT/SMT 的用武之地。",
     },
   ],
   checkpoints: [
