@@ -4,9 +4,10 @@ import { topics, totalStats } from "../data/topics";
 import { glossary } from "../data/glossary";
 import { community } from "../data/community";
 import { quickstart } from "../data/quickstart";
+import { reproProjects } from "../data/repro";
 import { url } from "../lib/url";
 
-type SearchType = "主题" | "前沿" | "课程" | "书" | "论文" | "工具" | "术语" | "Lab" | "社区" | "页面";
+type SearchType = "主题" | "前沿" | "课程" | "书" | "论文" | "工具" | "术语" | "Lab" | "复现" | "社区" | "页面";
 
 interface SearchEntry {
   type: SearchType;
@@ -131,6 +132,18 @@ for (const term of glossary) {
   });
 }
 
+for (const project of reproProjects) {
+  entries.push({
+    type: "复现",
+    title: project.title,
+    subtitle: `${topicTitle.get(project.topic) ?? "复现"} · ${project.paper}（${project.year}）`,
+    body: project.goal,
+    url: url(`/repro/#${project.topic}`),
+    topic: project.topic,
+    keywords: `${project.title} ${project.goal} ${project.paper} ${project.deliverable} ${project.steps.join(" ")} ${topicTitle.get(project.topic) ?? ""}`,
+  });
+}
+
 for (const item of community) {
   entries.push({
     type: "社区",
@@ -151,6 +164,7 @@ const pages = [
   ["课程与书单", `${totalStats.courses} 门课程、${totalStats.books} 本书`, "resources"],
   ["术语表", `${glossary.length} 个跨主题术语`, "glossary"],
   ["会议与社区", "会议、竞赛与问答入口", "community"],
+  ["论文复现", `${reproProjects.length} 个复现项目`, "repro"],
   ["实验室", "真值表、DPLL、二维 LP", "labs"],
   ["关于", "内容原则、状态标记与许可", "about"],
 ] as const;
@@ -165,12 +179,12 @@ for (const [title, body, slug] of pages) {
   });
 }
 
-const typeOrder: SearchType[] = ["主题", "前沿", "课程", "书", "论文", "工具", "术语", "Lab", "社区", "页面"];
+const typeOrder: SearchType[] = ["主题", "前沿", "课程", "书", "论文", "工具", "术语", "Lab", "复现", "社区", "页面"];
 const typeCounts = typeOrder.map((type) => ({ type, count: entries.filter((entry) => entry.type === type).length }));
 const indexJson = JSON.stringify(entries).replace(/</g, "\\u003c");
 ---
 
-<BaseLayout title="全站搜索" description="搜索《计算，逻辑与形式化》全部内容：课程、参考书、论文、工具、术语、Lab、会议与社区。">
+<BaseLayout title="全站搜索" description="搜索《计算，逻辑与形式化》全部内容：课程、参考书、论文、工具、术语、Lab、复现、会议与社区。">
   <section class="page-hero">
     <div class="wrap">
       <span class="eyebrow">Search / {entries.length} entries</span>

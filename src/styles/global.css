@@ -2050,6 +2050,12 @@ a.icon-btn {
   font-size: 1.02rem;
   font-weight: 700;
   line-height: 1.45;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.paper-title:hover {
+  color: var(--accent);
 }
 
 .paper-meta {
@@ -2072,6 +2078,78 @@ a.icon-btn {
   font-size: 0.9rem;
   color: var(--muted);
   padding-top: 0.2rem;
+  text-decoration: none;
+}
+
+.paper-arrow:hover {
+  color: var(--accent);
+}
+
+.paper-guide {
+  margin-top: 0.55rem;
+  border-left: 2px solid var(--line);
+  padding-left: 0.65rem;
+}
+
+.paper-guide summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  list-style: none;
+}
+
+.paper-guide summary::-webkit-details-marker {
+  display: none;
+}
+
+.paper-guide summary::before {
+  content: "+ ";
+}
+
+.paper-guide[open] summary::before {
+  content: "− ";
+}
+
+.paper-guide-body {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 0.77rem;
+  color: var(--ink-2);
+}
+
+.paper-guide-body p + p,
+.paper-guide-body p + div,
+.paper-guide-body div + p {
+  margin-top: 0.35rem;
+}
+
+.paper-guide-body b {
+  display: inline-block;
+  min-width: 4.2em;
+  margin-right: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--topic, var(--accent));
+}
+
+.paper-guide-body ul {
+  margin-top: 0.2rem;
+  padding-left: 1.1rem;
+}
+
+.paper-guide-body li {
+  margin-top: 0.12rem;
+}
+
+.paper-guide-prereq {
+  padding-top: 0.35rem;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
 }
 
 /* latest */
@@ -3306,6 +3384,257 @@ a.icon-btn {
   padding-top: 0.2rem;
 }
 
+/* ---------- reproduction labs ---------- */
+
+.repro-nav {
+  position: sticky;
+  top: 68px;
+  z-index: 28;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.repro-nav .wrap {
+  display: flex;
+  gap: 0.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.repro-nav .wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.repro-nav a {
+  flex: none;
+  padding: 0.7rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.repro-nav a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.repro-nav a span {
+  color: var(--accent);
+}
+
+.repro-group {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 130px;
+}
+
+.repro-group:last-of-type {
+  border-bottom: 0;
+}
+
+.repro-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.repro-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--topic, var(--accent));
+}
+
+.repro-head {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 0.7rem;
+}
+
+.repro-num {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--topic, var(--accent));
+  padding-top: 0.2rem;
+}
+
+.repro-head h3 {
+  font-size: 1.05rem;
+}
+
+.repro-paper {
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.repro-paper a {
+  color: var(--muted);
+}
+
+.repro-paper a:hover {
+  color: var(--accent);
+}
+
+.repro-goal {
+  margin-top: 0.55rem;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+
+.repro-card .row {
+  margin-top: 0.55rem;
+}
+
+.repro-steps {
+  margin-top: 0.75rem;
+  border-top: 1px dashed var(--line);
+}
+
+.repro-step {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 0.55rem;
+  align-items: start;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 0.77rem;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.repro-step input {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0.2rem 0 0;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.repro-step input::after {
+  content: "✓";
+  font-size: 0.65rem;
+  line-height: 1;
+  color: var(--bg);
+  transform: scale(0);
+  transition: transform 120ms ease;
+}
+
+.repro-step input:checked {
+  background: var(--topic, var(--accent));
+  border-color: var(--topic, var(--accent));
+}
+
+.repro-step input:checked::after {
+  transform: scale(1);
+}
+
+.repro-step:has(input:checked) span {
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--line-strong);
+}
+
+.repro-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+}
+
+.repro-progress .progress-track {
+  flex: 1;
+  max-width: 160px;
+  height: 6px;
+}
+
+.repro-deliverable {
+  margin-top: 0.65rem;
+  padding: 0.55rem 0.65rem;
+  background: color-mix(in srgb, var(--topic) 5%, var(--surface));
+  border: 1px dashed var(--line);
+  font-size: 0.75rem;
+  color: var(--ink-2);
+}
+
+.repro-deliverable b,
+.repro-pitfalls b,
+.repro-stretch b {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.57rem;
+  letter-spacing: 0.07em;
+  color: var(--topic, var(--accent));
+  text-transform: uppercase;
+}
+
+.repro-pitfalls {
+  margin-top: 0.55rem;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.repro-pitfalls ul {
+  margin-top: 0.15rem;
+  padding-left: 1.1rem;
+}
+
+.repro-stretch {
+  margin-top: 0.55rem;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.repro-stretch b {
+  display: inline;
+  margin-right: 0.4rem;
+}
+
+.repro-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 0.7rem;
+}
+
+.repro-tools a {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.repro-tools a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.repro-more {
+  margin-top: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+}
+
 /* ---------- quickstart ---------- */
 
 .quick-group {
@@ -3679,6 +4008,7 @@ a.icon-btn {
   .myth-grid,
   .choice-grid,
   .quick-grid,
+  .repro-grid,
   .principles,
   .footer-grid,
   .concept-grid,
@@ -3705,7 +4035,8 @@ a.icon-btn {
     padding-left: 0;
   }
 
-  .topic-nav {
+  .topic-nav,
+  .repro-nav {
     top: 64px;
   }
 

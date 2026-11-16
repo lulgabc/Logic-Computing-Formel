@@ -20,6 +20,7 @@ export const nav = [
   { href: "/resources/", label: "资源" },
   { href: "/glossary/", label: "术语" },
   { href: "/community/", label: "社区" },
+  { href: "/repro/", label: "复现" },
   { href: "/labs/", label: "实验室" },
   { href: "/about/", label: "关于" },
 ];

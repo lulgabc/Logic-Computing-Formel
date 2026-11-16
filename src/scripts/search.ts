@@ -20,7 +20,7 @@ const hint = document.querySelector<HTMLElement>("#search-hint");
 const count = document.querySelector<HTMLElement>("#search-count");
 const typeButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-search-type]"));
 
-const typeOrder = ["主题", "前沿", "课程", "书", "论文", "工具", "术语", "Lab", "社区", "页面"];
+const typeOrder = ["主题", "前沿", "课程", "书", "论文", "工具", "术语", "Lab", "复现", "社区", "页面"];
 let activeType = "all";
 
 function score(entry: SearchEntry, query: string): number {

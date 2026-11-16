@@ -6,6 +6,7 @@ import { computabilityComplexity } from "./computability-complexity";
 import { formalMethods } from "./formal-methods";
 import { optimization } from "./optimization";
 import { satSmtProof } from "./sat-smt-proof";
+import { reproProjects } from "../repro";
 
 export const topics: Topic[] = [
   mathematicalLogic,
@@ -42,5 +43,6 @@ export const totalStats = {
   toolEntries,
   labs: topics.reduce((sum, topic) => sum + topic.labs.length, 0),
   papers: topics.reduce((sum, topic) => sum + topic.papers.length, 0),
+  repros: reproProjects.length,
   checkpoints: topics.reduce((sum, topic) => sum + topic.checkpoints.length, 0),
 };

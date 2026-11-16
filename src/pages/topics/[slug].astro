@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import { topics, getAdjacentTopics } from "../../data/topics";
+import { paperGuides } from "../../data/paper-guides";
 import { url } from "../../lib/url";
 import type { Topic } from "../../data/types";
 
@@ -248,23 +249,41 @@ const sections = [
             <span class="aside">{topic.papers.length} 篇 · 按顺序</span>
           </div>
           <p class="prose" style="font-size:0.86rem;color:var(--muted);">
-            每篇只给“为什么读”和入口，不替你读。建议按顺序：第一遍读摘要、引言、主定理；
-            第二遍看证明骨架；第三遍复现一个引理或实验。
+            每篇给出“为什么读”和入口；点开“中文导读”看问题、核心想法与阅读重点。建议按顺序：
+            第一遍读摘要、引言、主定理；第二遍看证明骨架；第三遍复现一个引理或实验。
           </p>
           <div class="paper-list">
-            {topic.papers.map((paper) => (
-              <a class="paper-item" href={paper.url} rel="noopener">
-                <span class="paper-order">R{paper.order}</span>
-                <span class="paper-body">
-                  <span class="paper-title">{paper.title}</span>
-                  <span class="paper-meta">{paper.authors} · {paper.year} · {paper.venue}</span>
-                  <span class="paper-why">{paper.why}</span>
-                </span>
-                <span class="paper-arrow" aria-hidden="true">↗</span>
-              </a>
-            ))}
+            {topic.papers.map((paper) => {
+              const guide = paperGuides[paper.title];
+              return (
+                <div class="paper-item">
+                  <span class="paper-order">R{paper.order}</span>
+                  <div class="paper-body">
+                    <a class="paper-title" href={paper.url} rel="noopener">{paper.title}</a>
+                    <span class="paper-meta">{paper.authors} · {paper.year} · {paper.venue}</span>
+                    <span class="paper-why">{paper.why}</span>
+                    {guide && (
+                      <details class="paper-guide">
+                        <summary>中文导读 · {guide.level} · {guide.hours}</summary>
+                        <div class="paper-guide-body">
+                          <p><b>问题</b>{guide.problem}</p>
+                          <p><b>核心想法</b>{guide.idea}</p>
+                          <div><b>阅读重点</b><ul>{guide.focus.map((item) => <li>{item}</li>)}</ul></div>
+                          <p class="paper-guide-prereq"><b>先修</b>{guide.prereq}</p>
+                        </div>
+                      </details>
+                    )}
+                  </div>
+                  <a class="paper-arrow" href={paper.url} rel="noopener" aria-label={`打开论文：${paper.title}`}>↗</a>
+                </div>
+              );
+            })}
           </div>
           <div class="callout mt-3">
+            <b>从读到做：</b>打开 <a href={url(`/repro/#${topic.slug}`)}>论文复现实验清单</a>，每个主题有 2 个可执行项目；
+            如果一篇论文无法复现，至少写下它依赖了哪些未公开的实现或数据。
+          </div>
+          <div class="callout mt-2">
             <b>读论文的最低标准：</b>能用自己的话复述问题、主定理、证明的两个关键步骤，
             以及它没有解决什么。只收藏 PDF 不算读过。
           </div>

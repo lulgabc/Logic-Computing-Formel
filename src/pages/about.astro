@@ -31,7 +31,7 @@ const legend = Object.entries(statusMeta) as [keyof typeof statusMeta, (typeof s
         </p>
         <p>
           全站 {totalStats.topics} 个主题、{totalStats.courses} 门课程、{totalStats.books} 本书、{totalStats.tools} 个工具、
-          {totalStats.labs} 个 Lab、{totalStats.papers} 篇论文、{totalStats.checkpoints} 条自检项，以及 {glossary.length} 个跨主题术语。它不是“资源越多越好”的清单，而是按产物组织的学习路线。
+          {totalStats.labs} 个 Lab、{totalStats.papers} 篇论文、{totalStats.repros} 个复现项目、{totalStats.checkpoints} 条自检项，以及 {glossary.length} 个跨主题术语。它不是“资源越多越好”的清单，而是按产物组织的学习路线。
         </p>
 
         <h2 class="mt-4">它不是什么</h2>
@@ -90,6 +90,7 @@ const legend = Object.entries(statusMeta) as [keyof typeof statusMeta, (typeof s
           <li><a href={url("/resources/")}>课程与书单</a></li>
           <li><a href={url("/glossary/")}>术语表</a></li>
           <li><a href={url("/community/")}>会议与社区</a></li>
+          <li><a href={url("/repro/")}>论文复现</a></li>
           <li><a href={url("/labs/")}>交互实验室</a></li>
         </ul>
         <h3 class="mt-3">更新节奏</h3>

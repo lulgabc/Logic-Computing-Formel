@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { topics } from "../data/topics";
+import { reproProjects } from "../data/repro";
+import { url } from "../lib/url";
+
+const groups = topics.map((topic) => ({
+  topic,
+  items: reproProjects.filter((project) => project.topic === topic.slug),
+}));
+const totalSteps = reproProjects.reduce((sum, project) => sum + project.steps.length, 0);
+---
+
+<BaseLayout title="论文复现" description="七个主题的论文复现实验清单：Gödel 编码、相继式演算、依赖向量、Cubical Agda、Catlab、Cook–Levin、CTL 模型检测、Hoare WP、单纯形、Nesterov、DPLL+DRAT、CDCL 等，含步骤、交付物与常见坑。">
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Reproduction / {reproProjects.length} projects</span>
+      <h1>论文复现实验清单</h1>
+      <p class="lead">
+        “读过”不等于“复现过”。这里每个主题有 2 个项目：读一篇经典论文，做一个最小实现，
+        用测试/对拍证明它至少在一个小范围内成立，并记录与论文的差异。
+      </p>
+      <div class="row mt-2">
+        <span class="badge">{reproProjects.length} 个项目</span>
+        <span class="badge">{totalSteps} 个步骤</span>
+        <span class="badge">7 个主题</span>
+        <span class="badge">进度保存在本地</span>
+      </div>
+    </div>
+  </section>
+
+  <nav class="repro-nav" aria-label="复现主题导航">
+    <div class="wrap">
+      {groups.map(({ topic, items }) => (
+        <a href={`#${topic.slug}`}>{topic.index} · {topic.title} <span>{items.length}</span></a>
+      ))}
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:1.8rem;">
+    <div class="wrap">
+      <div class="callout">
+        <b>复现协议：</b>先读论文的摘要、主定理与实验设置；把“必须成立的最小命题”写成一句话；
+        实现最小版本；用 3–10 个可手算的案例对拍；最后写“差异报告”：哪些假设、数据、实现细节无法复现。
+        不要一开始就追求论文的完整规模。
+      </div>
+
+      {groups.map(({ topic, items }) => (
+        <section class="repro-group" id={topic.slug} style={`--topic:${topic.accent}`}>
+          <div class="section-title">
+            <span class="n">{topic.index}</span>
+            <h2>{topic.title}</h2>
+            <span class="aside">{items.length} 个项目</span>
+          </div>
+          <div class="repro-grid">
+            {items.map((project, index) => (
+              <article class="repro-card" data-repro-id={project.id}>
+                <div class="repro-head">
+                  <span class="repro-num">R-{String(index + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3>{project.title}</h3>
+                    <div class="repro-paper">
+                      对应阅读：<a href={project.paperUrl} rel="noopener">{project.paper}（{project.year}）↗</a>
+                    </div>
+                  </div>
+                </div>
+                <p class="repro-goal">{project.goal}</p>
+                <div class="row">
+                  {project.prereq.map((item) => <span class="badge">{item}</span>)}
+                </div>
+                <div class="repro-steps">
+                  {project.steps.map((step, stepIndex) => (
+                    <label class="repro-step">
+                      <input type="checkbox" data-step={stepIndex} />
+                      <span>{step}</span>
+                    </label>
+                  ))}
+                </div>
+                <div class="repro-progress">
+                  <span data-repro-text>0 / {project.steps.length}</span>
+                  <div class="progress-track"><div class="progress-fill" data-repro-fill></div></div>
+                </div>
+                <div class="repro-deliverable"><b>Deliverable</b>{project.deliverable}</div>
+                <div class="repro-pitfalls">
+                  <b>常见坑</b>
+                  <ul>{project.pitfalls.map((pitfall) => <li>{pitfall}</li>)}</ul>
+                </div>
+                {project.stretch && <p class="repro-stretch"><b>延伸</b>{project.stretch}</p>}
+                <div class="repro-tools">
+                  {project.tools.map((tool) => <a href={tool.url} rel="noopener">{tool.name} ↗</a>)}
+                </div>
+              </article>
+            ))}
+          </div>
+          <p class="repro-more">
+            <a href={url(`/topics/${topic.slug}/#papers`)}>回到 {topic.title} 的论文导读 →</a>
+          </p>
+        </section>
+      ))}
+
+      <div class="callout mt-4">
+        <b>完成标准：</b>不是“代码能跑”，而是你能说清楚：最小命题是什么、测试覆盖了哪些边界、
+        与论文的差异在哪里、下一个最小实验是什么。把这三件事写进 README，比多写 500 行代码更有价值。
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import "../scripts/repro";
+  </script>
+</BaseLayout>
