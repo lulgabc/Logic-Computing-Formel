@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { glossary } from "../data/glossary";
+import { glossaryDetails } from "../data/glossary-details";
 import { topics } from "../data/topics";
 import { url } from "../lib/url";
 
@@ -14,14 +15,14 @@ const allTerms = groups.flatMap((group) => group.terms);
 const initialTerm = allTerms[0];
 ---
 
-<BaseLayout title="术语表" description={`计算、逻辑与形式化术语速查：${glossary.length} 个核心概念，左侧按主题索引，右侧显示中文解释与英文原名。`}>
+<BaseLayout title="术语表" description={`计算、逻辑与形式化术语速查：${glossary.length} 个核心概念，左侧按主题索引，右侧显示一句话定义、详解、例子与公式/图示。`}>
   <section class="page-hero">
     <div class="wrap">
       <span class="eyebrow">Glossary / {glossary.length} terms</span>
       <h1>术语表</h1>
       <p class="lead">
-        像查字典一样使用：左边是按主题分组的术语索引，右边是当前术语的解释。
-        每个定义尽量只保留“最小可用直觉”，并链接回对应主题。
+        像查字典一样使用：左边是按主题分组的术语索引，右边是当前术语的完整词条。
+        每个词条包含一句话定义、详细解释、具体例子，以及必要的公式或图示。
       </p>
       <div class="row mt-2">
         <span class="badge">{glossary.length} 个术语</span>
@@ -70,6 +71,7 @@ const initialTerm = allTerms[0];
         <div class="glossary-detail" id="glossary-detail">
           {allTerms.map((term) => {
             const topic = topics.find((item) => item.slug === term.topic);
+            const info = glossaryDetails[term.term];
             const related = groups
               .find((group) => group.topic.slug === term.topic)
               ?.terms.filter((item) => item.term !== term.term)
@@ -81,7 +83,26 @@ const initialTerm = allTerms[0];
                 </div>
                 <h2>{term.term}</h2>
                 <div class="glossary-entry-en">{term.en}</div>
+                <div class="glossary-entry-label">一句话定义</div>
                 <p class="glossary-entry-def">{term.def}</p>
+                {info && (
+                  <>
+                    <div class="glossary-entry-detail">
+                      <h3>详解</h3>
+                      <p>{info.detail}</p>
+                    </div>
+                    <div class="glossary-entry-example">
+                      <h3>例子</h3>
+                      <p>{info.example}</p>
+                    </div>
+                    {info.formula && (
+                      <div class="glossary-formula">
+                        <span>公式 / 图示</span>
+                        <pre><code>{info.formula}</code></pre>
+                      </div>
+                    )}
+                  </>
+                )}
                 <div class="glossary-entry-actions">
                   {topic && <a href={url(`/topics/${topic.slug}/`)}>回到 {topic.title} →</a>}
                   <span class="glossary-entry-count">同主题 {groups.find((group) => group.topic.slug === term.topic)?.terms.length ?? 0} 个术语</span>
@@ -111,6 +132,10 @@ const initialTerm = allTerms[0];
       <div class="callout">
         <b>用法建议：</b>读论文时先查术语，再回到主题页看上下文。一个定义如果只能在“选择题”里认出来，
         却不能在证明或代码里使用，就值得回到对应 Lab 重新做一遍。
+        <br /><br />
+        <b>口径说明：</b>定义按标准教材/论文的通用用法整理；同一术语在不同社区可能有细微差异
+        （例如 completeness、refinement、model 的用法），主题页与论文导读给出具体上下文。
+        发现错误或更好例子，欢迎提 issue。
       </div>
     </div>
   </section>

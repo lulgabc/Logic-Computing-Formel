@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { topics, totalStats } from "../data/topics";
 import { glossary } from "../data/glossary";
+import { glossaryDetails } from "../data/glossary-details";
 import { community } from "../data/community";
 import { quickstart } from "../data/quickstart";
 import { reproProjects } from "../data/repro";
@@ -121,14 +122,15 @@ for (const { tool, domains } of toolMap.values()) {
 }
 
 for (const term of glossary) {
+  const info = glossaryDetails[term.term];
   entries.push({
     type: "术语",
     title: term.term,
     subtitle: `${topicTitle.get(term.topic) ?? "术语"} · ${term.en}`,
-    body: term.def,
-    url: url("/glossary/"),
+    body: info?.detail ?? term.def,
+    url: url(`/glossary/?term=${encodeURIComponent(term.term)}`),
     topic: term.topic,
-    keywords: `${term.term} ${term.en} ${term.def} ${topicTitle.get(term.topic) ?? ""}`,
+    keywords: `${term.term} ${term.en} ${term.def} ${info?.detail ?? ""} ${info?.example ?? ""} ${info?.formula ?? ""} ${topicTitle.get(term.topic) ?? ""}`,
   });
 }
 

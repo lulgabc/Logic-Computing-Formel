@@ -27,6 +27,16 @@ function select(term: string, options: { scroll?: boolean; updateUrl?: boolean }
     item.classList.toggle("is-active", item.dataset.term === term);
   });
 
+  const active = indexItems.find((item) => item.dataset.term === term);
+  const index = document.querySelector<HTMLElement>("#glossary-index");
+  if (active && index) {
+    const container = index.getBoundingClientRect();
+    const item = active.getBoundingClientRect();
+    if (item.top < container.top || item.bottom > container.bottom) {
+      index.scrollTop += item.top - container.top - 36;
+    }
+  }
+
   if (options.updateUrl !== false) setUrl(term);
 
   if (options.scroll && window.matchMedia("(max-width: 760px)").matches) {
