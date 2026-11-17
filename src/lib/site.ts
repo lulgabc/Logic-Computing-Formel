@@ -3,7 +3,7 @@ export const site = {
   titleEn: "Logic, Computing & Formalization",
   short: "LCF",
   description:
-    "一份写给工程师、数学爱好者与研究者的中文学习与实践地图：数学逻辑、类型论、范畴论、计算理论与复杂度、形式化验证、优化理论，以及 SAT/SMT/Proof Assistant。",
+    "一份写给工程师、数学爱好者与研究者的中文学习与实践地图：数学逻辑、类型论、范畴论、计算理论与复杂度、形式化验证、优化理论、SAT/SMT/Proof Assistant，以及 SystemVerilog 硬件验证。",
   author: "lulgabc",
   lang: "zh-CN",
   base: "/Logic-Computing-Formel",

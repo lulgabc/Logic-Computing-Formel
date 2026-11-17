@@ -705,4 +705,54 @@ export const glossary: GlossaryTerm[] = [
     topic: "sat-smt-proof",
     def: "一组导致不可满足的子集；用于调试规格、定位冲突与解释失败。",
   },
+
+  // 08 SystemVerilog 与硬件验证
+  {
+    term: "RTL",
+    en: "Register-Transfer Level",
+    topic: "systemverilog",
+    def: "用寄存器、组合逻辑与时钟描述硬件的抽象层级；SystemVerilog 的 always_ff/always_comb 是常用写法。",
+  },
+  {
+    term: "非阻塞赋值",
+    en: "Nonblocking Assignment",
+    topic: "systemverilog",
+    def: "时序逻辑中用 <= 赋值，使所有寄存器在同一个时钟沿后同时更新，避免仿真竞争。",
+  },
+  {
+    term: "SVA",
+    en: "SystemVerilog Assertions",
+    topic: "systemverilog",
+    def: "用 property/sequence 描述时序性质的断言语言；可在仿真中检查，也可交给形式化工具证明。",
+  },
+  {
+    term: "UVM",
+    en: "Universal Verification Methodology",
+    topic: "systemverilog",
+    def: "基于 SystemVerilog class 的分层验证方法学；用 driver、monitor、sequencer、scoreboard 组织 testbench。",
+  },
+  {
+    term: "DUT",
+    en: "Design Under Test",
+    topic: "systemverilog",
+    def: "被验证的设计模块；testbench 通过接口驱动 DUT、采样输出并与参考模型比较。",
+  },
+  {
+    term: "约束随机",
+    en: "Constrained Random",
+    topic: "systemverilog",
+    def: "用 randomize() 与 constraint 生成合法且有分布的激励，比手写定向测试更容易覆盖状态空间。",
+  },
+  {
+    term: "功能覆盖率",
+    en: "Functional Coverage",
+    topic: "systemverilog",
+    def: "用 covergroup/coverpoint 统计设计输入、状态与交叉组合是否被测试到，回答“测到了没有”。",
+  },
+  {
+    term: "形式化属性验证",
+    en: "Formal Property Verification",
+    topic: "systemverilog",
+    def: "把 RTL 与 SVA 转成状态迁移系统/逻辑公式，证明所有合法行为都满足性质；失败时给出反例。",
+  },
 ];

@@ -94,9 +94,9 @@ export const tracks: Track[] = [
     title: "形式化工程",
     en: "Formal Engineering",
     tagline: "把规格、证明与 CI 带进真实系统。",
-    audience: "做安全关键软件、云安全、芯片、编译器、协议或 Rust/C 系统的人。",
-    outcome: "能为一个真实组件写规格，用模型检测/演绎验证/抽象解释证明关键性质，并解释验证的边界与成本。",
-    topics: ["mathematical-logic", "formal-methods", "sat-smt-proof", "type-theory"],
+    audience: "做安全关键软件、云安全、芯片、编译器、协议或 Rust/C/SystemVerilog 系统的人。",
+    outcome: "能为一个真实组件写规格，用模型检测/演绎验证/抽象解释或 SVA/形式化证明关键性质，并解释验证的边界与成本。",
+    topics: ["mathematical-logic", "formal-methods", "sat-smt-proof", "type-theory", "systemverilog"],
     phases: [
       {
         name: "规格与模型检测",
@@ -111,15 +111,15 @@ export const tracks: Track[] = [
         deliverable: "验证队列/二分查找 + 10 个引理 + 规格评审。",
       },
       {
-        name: "系统与并发",
+        name: "系统、并发与 RTL",
         months: "第 7–9 月",
-        focus: "分离逻辑、Rust 所有权、Kani/CBMC、抽象解释。",
-        deliverable: "验证一个 Rust/C 组件；用两种工具交叉检查。",
+        focus: "分离逻辑、Rust 所有权、Kani/CBMC、SVA 与 Yosys/SymbiYosys 形式化。",
+        deliverable: "验证一个 Rust/C 组件或 RTL 断言；用两种工具交叉检查。",
       },
       {
         name: "工业案例与证明工程",
         months: "第 10–12 月",
-        focus: "seL4/CompCert/Cedar 选一个；CI、证明维护、成本分析。",
+        focus: "seL4/CompCert/Cedar/开源 RTL 选一个；CI、证明维护、成本分析。",
         deliverable: "10 页案例报告 + 可复现的验证流水线。",
       },
     ],
@@ -183,6 +183,14 @@ export const highlights: Highlight[] = [
     title: "HoTT Book 实数在 Cubical Agda 中形式化",
     status: "reported",
     url: "/topics/type-theory/#latest",
+  },
+  {
+    date: "2026-11",
+    topicSlug: "systemverilog",
+    topicTitle: "SystemVerilog",
+    title: "Verilator 5.054 与 Yosys 0.71 发布，开源 RTL 流程继续成熟",
+    status: "verified",
+    url: "/topics/systemverilog/#latest",
   },
 ];
 

@@ -578,4 +578,46 @@ export const glossaryDetails: Record<string, GlossaryDetail> = {
     example: "约束 {x>10, x<5, y=0} 的 unsat core 是 {x>10, x<5}，y=0 与冲突无关。",
     formula: "C⊆F，C 不可满足",
   },
+
+  // 08 SystemVerilog
+  "RTL": {
+    detail: "RTL 把硬件描述成“寄存器 + 组合逻辑 + 时钟”的网络；综合工具把它映射成门级电路。SystemVerilog 用 always_ff 描述时序、always_comb 描述组合，并检查 latch/多驱动等问题。",
+    example: "一个 4 位计数器在 always_ff @(posedge clk) 中执行 count <= count + 1；综合后是触发器加加法器。",
+    formula: "always_ff @(posedge clk) q <= d;  always_comb y = a & b;",
+  },
+  "非阻塞赋值": {
+    detail: "非阻塞赋值 <= 在时钟沿采样右侧值，并在同一时间步结束时更新左侧，因此多个寄存器看起来同时更新。阻塞赋值 = 立即更新，容易在 testbench 或组合逻辑中引入顺序依赖与竞争。",
+    example: "q1 <= d; q2 <= q1; 两个寄存器交换/移位时不会因为执行顺序而互相覆盖；若用 =，q2 可能拿到已经更新的 q1。",
+    formula: "posedge clk: q <= d  （采样后更新）",
+  },
+  "SVA": {
+    detail: "SVA 用 property 和 sequence 描述跨时钟周期的行为，例如“请求后下一拍必须 grant”。并发断言在时钟采样点上检查，可被仿真器监控，也可被形式化工具证明。",
+    example: "assert property (@(posedge clk) disable iff (!rst_n) req |-> ##1 gnt); 表示每个请求在下一拍得到 grant。",
+    formula: "assert property (@(posedge clk) antecedent |-> consequent);",
+  },
+  "UVM": {
+    detail: "UVM 把 testbench 分成可复用组件：driver 把 transaction 转成引脚波形，monitor 采样引脚并还原 transaction，sequencer 产生激励，scoreboard 比较 DUT 与参考模型，coverage 统计覆盖。phase 机制控制 build/connect/run/report 的顺序。",
+    example: "一个 AXI-Lite 验证环境：sequence 产生读写 transaction，driver 驱动 axil 信号，monitor 采样 bresp，scoreboard 检查读数据。",
+    formula: "build_phase → connect_phase → run_phase → report_phase",
+  },
+  "DUT": {
+    detail: "DUT 是被验证的硬件模块，通常是 RTL 或门级网表。testbench 通过 interface 连接 DUT，驱动输入、采样输出，并用断言/scoreboard 判断行为是否正确。",
+    example: "验证一个仲裁器时，DUT 是 arbiter 模块，testbench 驱动 req、采样 gnt，并检查 one-hot 性质。",
+    formula: "TB → interface → DUT → monitor → scoreboard",
+  },
+  "约束随机": {
+    detail: "约束随机让 solver 在 constraint 允许的空间内生成激励，既能保证合法性，又能探索手写测试想不到的组合。约束过强会覆盖不足，过弱会产生大量非法激励，需要覆盖率反馈调参。",
+    example: "rand bit [3:0] len; constraint c { len inside {[1:8]}; } 生成 1–8 的随机长度；再加 keep 约束避免与其它字段冲突。",
+    formula: "randomize() with { constraint; }",
+  },
+  "功能覆盖率": {
+    detail: "功能覆盖率从设计意图出发，统计关键输入、状态、交叉组合是否被激励到。它和代码覆盖率不同：代码覆盖率高不代表验证了正确场景，功能覆盖率才回答“测试计划是否完成”。",
+    example: "covergroup cg @(posedge clk); cp_req: coverpoint req { bins both = {2'b11}; } endgroup 统计两个请求同时到达的场景。",
+    formula: "covergroup / coverpoint / cross",
+  },
+  "形式化属性验证": {
+    detail: "形式化属性验证把 RTL 与 SVA 转成状态迁移系统或逻辑公式，探索所有合法输入序列，证明性质成立或给出反例。它不依赖激励，但受状态空间、假设和工具容量限制。",
+    example: "Yosys read_verilog -formal 把 arbiter 与 assert 转成 SMT，yosys-smtbmc 检查 8 步内无 gnt=2'b11；SymbiYosys prove 可做 k-归纳。",
+    formula: "M ⊨ φ  （所有可达状态满足 φ）",
+  },
 };

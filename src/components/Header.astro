@@ -30,7 +30,7 @@ const isActive = (href: string) => (href === "/" ? current === "/" : current.sta
             >
               主题 <span aria-hidden="true">▾</span>
             </button>
-            <div class="nav-drop-menu" role="menu" aria-label="七个主题">
+            <div class="nav-drop-menu" role="menu" aria-label="全部主题">
               {topics.map((topic) => (
                 <a href={url(`/topics/${topic.slug}/`)} role="menuitem">
                   <span class="nd-num">{topic.index}</span>

@@ -11,7 +11,7 @@ const groups = topics.map((topic) => ({
 const totalSteps = reproProjects.reduce((sum, project) => sum + project.steps.length, 0);
 ---
 
-<BaseLayout title="论文复现" description="七个主题的论文复现实验清单：Gödel 编码、相继式演算、依赖向量、Cubical Agda、Catlab、Cook–Levin、CTL 模型检测、Hoare WP、单纯形、Nesterov、DPLL+DRAT、CDCL 等，含步骤、交付物与常见坑。">
+<BaseLayout title="论文复现" description="各主题的论文复现实验清单：Gödel 编码、相继式演算、依赖向量、Cubical Agda、Catlab、Cook–Levin、CTL 模型检测、Hoare WP、单纯形、Nesterov、DPLL+DRAT、CDCL、SVA 与形式化硬件验证等，含步骤、交付物与常见坑。">
   <section class="page-hero">
     <div class="wrap">
       <span class="eyebrow">Reproduction / {reproProjects.length} projects</span>
@@ -23,7 +23,7 @@ const totalSteps = reproProjects.reduce((sum, project) => sum + project.steps.le
       <div class="row mt-2">
         <span class="badge">{reproProjects.length} 个项目</span>
         <span class="badge">{totalSteps} 个步骤</span>
-        <span class="badge">7 个主题</span>
+        <span class="badge">{groups.length} 个主题</span>
         <span class="badge">进度保存在本地</span>
       </div>
     </div>

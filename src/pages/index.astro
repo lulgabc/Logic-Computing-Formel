@@ -24,11 +24,11 @@ const liveHighlights = [...highlights].sort((a, b) => dateKey(b.date).localeComp
           </h1>
           <p class="hero-lead">
             从“证明是什么”到“如何让机器检查证明”，从可计算性的边界到可证明的最优解。
-            一份写给工程师、数学爱好者与研究者的中文学习地图：七个主题、三条路线、可运行的实验室。
+            一份写给工程师、数学爱好者与研究者的中文学习地图：八个主题、三条路线、可运行的实验室。
           </p>
           <div class="hero-cta">
             <a class="btn" href={url("/roadmap/")}>选择一条路线 <span aria-hidden="true">→</span></a>
-            <a class="btn btn-ghost" href={url("/#topics")}>浏览七个主题</a>
+            <a class="btn btn-ghost" href={url("/#topics")}>浏览全部主题</a>
           </div>
           <p class="hero-note">
             {totalStats.topics} 个主题 · {totalStats.courses} 门课程 · {totalStats.books} 本书 · {totalStats.papers} 篇论文 · {totalStats.repros} 个复现 · {totalStats.tools} 个工具 · {totalStats.labs} 个 Lab
@@ -86,10 +86,11 @@ const liveHighlights = [...highlights].sort((a, b) => dateKey(b.date).localeComp
 
   <section class="section" id="topics">
     <div class="wrap">
-      <SectionHead eyebrow="01 / MAP" title="七个主题，一条共同的语法">
+      <SectionHead eyebrow="01 / MAP" title="八个主题，一条共同的语法">
         <p>
-          它们不是七门孤立的课：逻辑提供语言，类型论与范畴论提供结构，复杂度划出边界，
-          形式化验证与优化把理论变成工程，SAT/SMT/Proof Assistant 则是可执行的推理栈。
+          它们不是八门孤立的课：逻辑提供语言，类型论与范畴论提供结构，复杂度划出边界，
+          形式化验证与优化把理论变成工程，SAT/SMT/Proof Assistant 是可执行的推理栈，
+          SystemVerilog 则把验证带进真实硬件。
         </p>
       </SectionHead>
       <div class="topic-grid">

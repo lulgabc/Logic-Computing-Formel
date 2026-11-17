@@ -12,7 +12,7 @@ const books: BookEntry[] = topics.flatMap((topic) => topic.books.map((book) => (
 const levels = ["入门", "进阶", "研究"];
 ---
 
-<BaseLayout title="课程与书单" description="七个主题的精选课程与参考书：数学逻辑、类型论、范畴论、计算与复杂度、形式化验证、优化、SAT/SMT/Proof Assistant。可按主题与难度筛选。">
+<BaseLayout title="课程与书单" description="八个主题的精选课程与参考书：数学逻辑、类型论、范畴论、计算与复杂度、形式化验证、优化、SAT/SMT/Proof Assistant、SystemVerilog 硬件验证。可按主题与难度筛选。">
   <section class="page-hero">
     <div class="wrap">
       <span class="eyebrow">Resources / {courses.length + books.length} entries</span>
@@ -24,7 +24,7 @@ const levels = ["入门", "进阶", "研究"];
       <div class="row mt-2">
         <span class="badge">{courses.length} 门课程</span>
         <span class="badge">{books.length} 本书</span>
-        <span class="badge">7 个主题</span>
+        <span class="badge">{topics.length} 个主题</span>
         <span class="badge">中文站点 · 英文资源</span>
       </div>
     </div>

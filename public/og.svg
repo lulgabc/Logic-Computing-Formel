@@ -19,16 +19,17 @@
   <text x="78" y="338" font-family="Songti SC, Noto Serif CJK SC, STSong, serif" font-size="82" font-weight="700" fill="#171512">与<tspan fill="#b4430f">形式化</tspan></text>
 
   <text x="82" y="404" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" letter-spacing="1.5" fill="#3d3830">LOGIC · COMPUTING · FORMALIZATION</text>
-  <text x="82" y="448" font-family="PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" fill="#746d60">七个主题 · 三条路线 · 可运行的实验室</text>
+  <text x="82" y="448" font-family="PingFang SC, Noto Sans CJK SC, sans-serif" font-size="21" fill="#746d60">八个主题 · 三条路线 · 可运行的实验室</text>
 
-  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#746d60">
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#746d60">
     <text x="82" y="526">01 数学逻辑</text>
-    <text x="278" y="526">02 类型论</text>
-    <text x="438" y="526">03 范畴论</text>
-    <text x="598" y="526">04 复杂度</text>
-    <text x="748" y="526">05 形式化</text>
-    <text x="898" y="526">06 优化</text>
-    <text x="1028" y="526">07 SAT/SMT</text>
+    <text x="220" y="526">02 类型论</text>
+    <text x="350" y="526">03 范畴论</text>
+    <text x="480" y="526">04 复杂度</text>
+    <text x="610" y="526">05 形式化</text>
+    <text x="740" y="526">06 优化</text>
+    <text x="855" y="526">07 SAT/SMT</text>
+    <text x="995" y="526">08 SystemVerilog</text>
   </g>
   <line x1="82" y1="556" x2="1118" y2="556" stroke="#b9ae99" stroke-width="1"/>
   <text x="82" y="594" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#746d60">lulgabc.github.io / Logic-Computing-Formel</text>

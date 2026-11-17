@@ -254,4 +254,37 @@ export const paperGuides: Record<string, PaperGuide> = {
     level: "进阶",
     hours: "3–5 h",
   },
+
+  "IEEE 1800-2023 Standard for SystemVerilog": {
+    problem: "SystemVerilog 的语法、语义、断言与验证结构到底如何定义？",
+    idea: "IEEE 1800 把设计、断言、覆盖率和验证结构统一在一个语言标准里；工具差异应以条款为准。",
+    focus: ["SVA 的 property/sequence 语义", "覆盖率、随机化与 interface 的规范行为"],
+    prereq: "Verilog 基础、数字设计",
+    level: "研究",
+    hours: "查阅 8–12 h",
+  },
+  "IEEE 1800.2-2020 Standard for UVM": {
+    problem: "UVM 的组件、phase、factory、config_db 与 sequence 的标准语义是什么？",
+    idea: "把 UVM 从“某个 simulator 的库”提升为可移植标准；理解 phase 与 factory 的规范行为。",
+    focus: ["phase 与 objection 机制", "factory/config_db/sequence 的标准化接口"],
+    prereq: "SystemVerilog class、验证基础",
+    level: "研究",
+    hours: "查阅 6–10 h",
+  },
+  "LLM-Driven SystemVerilog Assertion Generation with Formal Verification": {
+    problem: "LLM 能否生成正确的 SVA，并自动交给形式化工具检查？",
+    idea: "让模型生成断言，再用 SymbiYosys 进行 formal 验证；把“生成”与“证明”组成闭环。",
+    focus: ["SVA 生成的质量指标", "formal pass rate 与失败分类"],
+    prereq: "SVA、SymbiYosys 基础",
+    level: "研究",
+    hours: "3–5 h",
+  },
+  "Open-Source LLM-Driven Formal Verification: A Multi-Agent Pipeline for RTL Repair": {
+    problem: "如何用多代理 + 开源形式化工具修复 RTL 错误？",
+    idea: "把 RTL 修复拆成定位、改写、形式化验证与反例反馈的多代理流程，使用 Yosys/SymbiYosys 做证据。",
+    focus: ["多代理如何共享反例", "开源 formal 流程的边界"],
+    prereq: "RTL、SVA、Yosys",
+    level: "研究",
+    hours: "4–6 h",
+  },
 };

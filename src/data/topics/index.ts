@@ -6,6 +6,7 @@ import { computabilityComplexity } from "./computability-complexity";
 import { formalMethods } from "./formal-methods";
 import { optimization } from "./optimization";
 import { satSmtProof } from "./sat-smt-proof";
+import { systemVerilog } from "./systemverilog";
 import { reproProjects } from "../repro";
 
 export const topics: Topic[] = [
@@ -16,6 +17,7 @@ export const topics: Topic[] = [
   formalMethods,
   optimization,
   satSmtProof,
+  systemVerilog,
 ];
 
 export const topicBySlug = new Map(topics.map((topic) => [topic.slug, topic]));

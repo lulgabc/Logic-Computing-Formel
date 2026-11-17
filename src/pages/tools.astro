@@ -16,13 +16,13 @@ const commercialCount = allEntries.filter(({ tool }) => tool.kind === "commercia
 const researchCount = allEntries.filter(({ tool }) => tool.kind === "research").length;
 ---
 
-<BaseLayout title="工具全景" description="按七个主题归类的开源、商业与研究工具全景：Lean、Rocq、Isabelle、Z3、cvc5、Gurobi、TLA+、Verus、Catlab、HiGHS 等，可按类型与关键词筛选。">
+<BaseLayout title="工具全景" description="按八个主题归类的开源、商业与研究工具全景：Lean、Rocq、Isabelle、Z3、cvc5、Gurobi、TLA+、Verus、Catlab、HiGHS、Verilator、Yosys 等，可按类型与关键词筛选。">
   <section class="page-hero">
     <div class="wrap">
       <span class="eyebrow">Tools / {totalStats.toolEntries} entries</span>
       <h1>工具全景</h1>
       <p class="lead">
-        从证明助手到 SAT/SMT 求解器，从范畴论建模到工业优化。这里按七个主题归类，
+        从证明助手到 SAT/SMT 求解器，从范畴论建模到工业优化，再到 SystemVerilog 硬件验证。这里按主题归类，
         每个主题再分“开源 / 学术”和“商业 / 厂商”。同一工具可能出现在多个主题中，这是有意的：
         它确实在不同主题里承担不同角色。
       </p>

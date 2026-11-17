@@ -1,0 +1,15 @@
+# SymbiYosys configuration for the arbiter mutual-exclusion proof.
+[options]
+mode prove
+depth 20
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal -sv arbiter.sv arbiter_formal.sv
+prep -top arbiter_formal
+
+[files]
+arbiter.sv
+arbiter_formal.sv
