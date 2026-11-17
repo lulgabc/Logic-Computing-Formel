@@ -182,6 +182,15 @@ export const quickstart: QuickstartItem[] = [
     url: "https://yosyshq.net/yosys/",
   },
   {
+    tool: "SymbiYosys (sby)",
+    group: "硬件验证",
+    topic: "systemverilog",
+    note: "Yosys 的形式化驱动：BMC、k-归纳、覆盖与反例；用 .sby 文件描述证明流程。",
+    install: ["brew install sby z3"],
+    verify: "sby --version",
+    url: "https://github.com/YosysHQ/sby",
+  },
+  {
     tool: "sv2v",
     group: "硬件验证",
     topic: "systemverilog",

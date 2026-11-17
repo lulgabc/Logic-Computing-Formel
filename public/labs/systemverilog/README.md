@@ -42,7 +42,7 @@ verilator --lint-only --assert --timing \
   arbiter.sv arbiter_sva.sv --top-module arbiter_sva
 ```
 
-## 3. 形式化（BMC）
+## 3. 形式化（BMC 与 k-归纳）
 
 ```bash
 yosys -q formal_arbiter.ys
@@ -55,10 +55,20 @@ yosys-smtbmc -s z3 -t 8 arbiter_formal.smt2
 Status: PASSED
 ```
 
-`arbiter.sby` 是 SymbiYosys 配置；安装 OSS CAD Suite 后可运行：
+`arbiter.sby` 是 SymbiYosys 配置，用 k-归纳做无界证明：
 
 ```bash
+brew install sby z3
 sby arbiter.sby
+```
+
+预期结尾：
+
+```text
+engine_0 (smtbmc z3) returned pass for basecase
+engine_0 (smtbmc z3) returned pass for induction
+successful proof by k-induction.
+DONE (PASS, rc=0)
 ```
 
 ## 4. lint + 综合

@@ -27,7 +27,7 @@
   - DPLL SAT 求解器（带决策/传播/冲突轨迹）
   - 二维线性规划几何（可行域、目标等值线、无界/不可行）
 - **工具全景** — 按八个主题归类，每个主题再分开源/学术与商业/厂商；可按类型、关键词筛选，并附“四个典型场景”选择指南。
-- **快速开始** — 27 个常用工具的安装命令与 `--version` 验证，覆盖 Lean、Rocq、Agda、Z3、cvc5、TLA+、Dafny、Verus、Kani、CVXPY、HiGHS、SCIP、Verilator、Yosys、cocotb 等。
+- **快速开始** — 28 个常用工具的安装命令与 `--version` 验证，覆盖 Lean、Rocq、Agda、Z3、cvc5、TLA+、Dafny、Verus、Kani、CVXPY、HiGHS、SCIP、Verilator、Yosys、SymbiYosys、cocotb 等。
 - **全站搜索** — 搜索 500+ 条条目：课程、书、论文、工具、术语、前沿动态、Lab、复现、会议与页面，支持类型与主题筛选。
 - **课程与书单** — 按主题、难度筛选；课程 / 书单双 tab。
 - **术语表** — 120 个跨主题核心术语，字典式布局：左侧按主题索引，右侧包含一句话定义、详解、例子与公式/图示；支持筛选与回链。
@@ -97,7 +97,7 @@ src/
     site.ts               # 三条路线、首页动态、内容原则、状态定义
     glossary.ts           # 120 个跨主题术语
     community.ts          # 会议、竞赛与社区入口
-    quickstart.ts         # 27 个工具的安装命令
+    quickstart.ts         # 28 个工具的安装命令
     paper-guides.ts       # 30 篇论文的中文导读
     repro.ts              # 16 个论文复现实验
     topics/               # 八个主题的数据文件（含论文阅读清单）
@@ -106,7 +106,7 @@ src/
     roadmap.astro         # 三条路线
     topics/[slug].astro   # 主题详情（静态生成）
     tools.astro           # 工具全景 + 筛选 + 场景选择指南
-    quickstart.astro      # 27 个工具的安装与验证命令
+    quickstart.astro      # 28 个工具的安装与验证命令
     resources.astro       # 课程/书单 + 筛选
     glossary.astro        # 字典式术语表：左侧索引 + 右侧解释
     community.astro       # 会议、竞赛与社区 + 筛选
